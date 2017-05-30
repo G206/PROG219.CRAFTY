@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Final Project - Crafty JS</title>
+
+    <link rel="styleSheet" type="text/css" href="_css/master.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="_lib/crafty.js"></script>
+</head>
+<body>
+    <!-- <header>
+		<h1>Galaga Derby</h1>
+	</header> -->
+    <div id="modalSplash" class="modalBox">
+        <div id="splashStart" class="splash">
+            <p class="black">
+                 This game requires that the display be set at a minimum resolution of SXGA (1280x1024), full 1080P is preferred. Otherwise, you will not be able to view all the neccessary buttons and window displays. If unable, please zoom out (-) in your browser window to view all elements.
+            </p>
+            <header>
+        		<h1>Galaga Derby</h1>
+        	</header>
+            <div class="">
+                <h2>You player character is the Galaga Ship. Your objective in stage one is to clear all Asteriods</h2>
+            </div>
+            <div>
+                <h2>Click on the START button below to start the game</h2>
+            </div>
+            <div>
+                <button id="btnStart">START</button>
+            </div>
+            <!--	Footer Copyright-->
+            <footer>Copyright &copy; Gabe</footer>
+        </div>
+        <!-- Splash Screen for Level Change -->
+        <div id="splashLevel" class="splash">
+            <header>
+        		<h1>Galaga Derby</h1>
+        	</header>
+            <h2>NEXT LEVEL</h2>
+            <ol>
+                <li>
+                    Enemy Ships Added
+                </li>
+
+            </ol>
+            <input id="btnNewLevel" type="button" value="Start Next Level" />
+        </div>
+        <div id="splashEnd" class="splash">
+            <header>
+        		<h1>Galaga Derby</h1>
+        	</header>
+            <div>
+                <h2 id="endOutput"></h2>
+            </div>
+            <div>
+                <h2>Game Over. Hope you had fun.</h2>
+            </div>
+                <h2>Final Score: <span id="score" class="black"></span></h2>
+            <div>
+                <h2>Click on the START button below if you wish to play again</h2>
+            </div>
+            <div>
+                <button id="btnReStart">START</button>
+            </div>
+            <!--	Footer Copyright-->
+            <footer>Copyright &copy; Gabe</footer>
+        </div>
+    </div>
+    <main id="game" class="gameMain">
+
+    </main>
+
+<!--	Footer Copyright-->
+<footer class="">
+    <div class="">
+        <div class="">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</div>
+    </div>
+</footer>
+	<script src="_scripts/scripts.js"></script>
+    <script src="_scripts/components.js"></script>
+    <script src="_scripts/scenes.js"></script>
+    <script src="_scripts/scenes2.js"></script>
+
+</body>
+</html>

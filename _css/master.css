@@ -1,0 +1,89 @@
+h1, h2, h3, h4 {
+	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
+}
+
+body {
+	font-family: Rockwell, Cambria, "Times New Roman", serif;
+	background-color: beige;
+	color: black;
+}
+
+footer {
+	margin: 6px;
+}
+
+div.splash {
+	position: relative;
+	/*top: 128px;
+	left: 64px;*/
+	margin: 10% auto;
+	width: 80%;
+	border: 1px solid red;
+	border-radius: 16px;
+	background-color: darkgray;
+	color: blue;
+	padding: 12px 24px;
+	pointer-events: auto;
+}
+
+div.splash div {
+	margin: 16px 0;
+}
+
+div.splash button {
+	margin: 24px 0 0 0;
+	width: 100%;
+	height: 1.5em;
+	font-size: 1.5em;
+	font-weight: 600;
+	color: red;
+}
+
+header {
+	margin: 12px 24px;
+	background-color: inherit;
+	color: white;
+	font-size: 1.5em;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+	text-shadow:
+       3px 3px 0 #000,
+     -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+}
+
+/*ID Specific Styling*/
+div[id="splashLevel"], div[id="splashEnd"] {
+	display: none;
+}
+
+#game {
+	display: flex;
+	margin: 0 24px;
+	pointer-events: none;
+}
+
+#endOutput{
+	color: black;
+}
+
+/* Code for Modal Styling */
+div.modalBox {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:1;
+	-webkit-transition: opacity 500ms ease-in;
+	-moz-transition: opacity 500ms ease-in;
+	transition: opacity 500ms ease-in;
+	pointer-events: none;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
