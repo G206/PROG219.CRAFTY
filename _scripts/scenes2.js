@@ -1,7 +1,11 @@
+// "use strict";
+
 Crafty.defineScene('secondGame', function() {
 	// Background - Space
-    Crafty.background("url('_images/galaxy.jpg') no-repeat center");
-	theGame.style.backgroundSize = "cover";
+    // Crafty.background("url('_images/galaxy.jpg') no-repeat center");
+	// theGame.style.backgroundSize = "cover";
+	var backgroundAsset = Crafty.e('ImageObject, Image')
+		.image("_images/star.png");
 
 	// Variable to store initial player X & Y random position
 	var playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
@@ -68,9 +72,17 @@ Crafty.defineScene('secondGame', function() {
     					this.y -= this.yspeed;
 
     					//destroy if it goes out of bounds
-    					if(this._x > Crafty.viewport.width || this._x < 0 || this._y > Crafty.viewport.height || this._y < 0) {
-    						this.destroy();
-    					}
+						if (gameVar.canvasFollow) {
+							// This takes into account if the viewport Followme option is tured on. Viewport border changes with player movement. Missile will self destroy with constant border change.
+							if(this._x > (player.x + (Crafty.viewport.width/2)) || this._x < (player.x - (Crafty.viewport.width/2)) || this._y > (player.y + (Crafty.viewport.height/2)) || this._y < (player.y - (Crafty.viewport.height/2))) {
+	    						this.destroy();
+	    					}
+						} else {
+							// Boarder's are fixed.
+							if(this._x > Crafty.viewport.width || this._x < 0 || this._y > Crafty.viewport.height || this._y < 0) {
+								this.destroy();
+							}
+						}
     				});
 			// Function for WARP Key
     		} else if (e.keyCode === Crafty.keys.W) {
@@ -148,7 +160,7 @@ Crafty.defineScene('secondGame', function() {
             this.collision()
             // Collision with Missile destroys asteroid
             .onHit('missile', function(e) {
-				console.log('Missile Hits Enemy');
+				console.log('Missile Hits Aseroid');
                 // if hit by a missile increment the score
                 gameVar.score += 1;
                 score.text('Score: '+ gameVar.score);
@@ -216,9 +228,44 @@ Crafty.defineScene('secondGame', function() {
         }
     });
 
+	//Enemy component
+	Crafty.c('enemyShip', {
+		init: function() {
+			this.requires('Actor, Enemy, Collision');
+			// this.collision()
+			// // Collision with Missile destroys asteroid
+			// .onHit('missile', function(e) {
+			// 	console.log('Missile Hits Enemy');
+			// 	// if hit by a missile increment the score
+			// 	gameVar.score += 1;
+			// 	score.text('Score: '+ gameVar.score);
+			// 	Crafty.audio.play('explosion');
+			// 	e[0].obj.destroy(); //destroy the missile
+			//
+			// 	this.destroy();
+			// })
+			// // Collision with ship damages ship and destroys asteroid
+			// .onHit('ship', function(e) {
+			// 	console.log('Ship Collision');
+			// 	// if destroyed by ship collision increment the score, decrease HP
+			// 	gameVar.score += 1;
+			// 	score.text('Score: '+ gameVar.score);
+			// 	gameVar.hitPoint -= 1;
+			// 	hitPoint.text('HitPoint: '+ gameVar.hitPoint);
+			// 	Crafty.audio.play('collision');
+			//
+			// 	// End Game if HP is at 0
+			// 	if (gameVar.hitPoint <= 0) {
+			// 		exitLevel();
+			// 	}
+			// });
+		}
+	});
+
     //function to fill the screen with asteroids by a random amount
     function initRocks(lower, upper) {
         var rocks = Crafty.math.randomInt(lower, upper);
+		console.log("Initialize Asteroids: " + rocks);
         gameVar.asteroidCount = rocks;
         gameVar.lastCount = rocks;
 
@@ -226,12 +273,29 @@ Crafty.defineScene('secondGame', function() {
             Crafty.e('rock_L, asteroid');
         }
     }
-    //first level has between 1 and 5 asteroids
-    initRocks(1, 2);
+
+	function initEnemies(type, lower, upper) {
+		var enemies = Crafty.math.randomInt(lower, upper);
+		console.log("Initialize Enemies: " + type);
+
+
+        for(var i = 0; i < enemies; i++) {
+            Crafty.e('enemyL_g, enemyShip');
+        }
+	}
+    //first level has between 1 and variable # specified by the Game Settings
+    initRocks(1, gameVar.maxAsteroids);
+	initEnemies('enemyL_g', 1, 1);
 
 	Crafty.viewport.clampToEntities = false;
-	Crafty.viewport.scale(1);
-    // Crafty.viewport.follow(player, 0, 0);
+	Crafty.viewport.scale(gameVar.canvasScale);
+	if (gameVar.canvasFollow) {
+		Crafty.viewport.follow(player, 0, 0);
+	}
 
+	// var canvas = document.querySelector('canvas');
+	// var ctx = canvas.getContext('2d');
+	// var img = document.getElementById('galaxyBackground');
+	// ctx.drawImage(img, 0, 0, gameVar.canvasW, gameVar.canvasH);
 
 });

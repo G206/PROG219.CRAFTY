@@ -4,8 +4,8 @@ h1, h2, h3, h4 {
 
 body {
 	font-family: Rockwell, Cambria, "Times New Roman", serif;
-	background-color: beige;
-	color: black;
+	background-color: black;
+	color: white;
 }
 
 footer {
@@ -30,12 +30,11 @@ div.splash div {
 	margin: 16px 0;
 }
 
-div.splash button {
-	margin: 24px 0 0 0;
+.splashButton {
+	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
+	margin: 18px 0 0 0;
 	width: 100%;
-	height: 1.5em;
 	font-size: 1.5em;
-	font-weight: 600;
 	color: red;
 }
 
@@ -65,10 +64,6 @@ div[id="splashLevel"], div[id="splashEnd"] {
 	pointer-events: none;
 }
 
-#endOutput{
-	color: black;
-}
-
 /* Code for Modal Styling */
 div.modalBox {
 	position: fixed;
@@ -77,13 +72,61 @@ div.modalBox {
 	bottom: 0;
 	left: 0;
 	background: rgba(0,0,0,0.8);
-	z-index: 99999;
+	z-index: 9999;
 	opacity:1;
-	-webkit-transition: opacity 500ms ease-in;
-	-moz-transition: opacity 500ms ease-in;
-	transition: opacity 500ms ease-in;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
 	pointer-events: none;
 	display: block;
 	width: 100%;
 	height: 100%;
+}
+
+#openSettings {
+	position: absolute;
+	top: 96px;
+	right: 24px;
+	left: 24px;
+	border: 1px solid blue;
+	border-radius: 16px;
+	background: white;
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+}
+
+#openSettings:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+form {
+	margin: 5%;
+}
+
+form fieldset legend {
+	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
+	font-size: 1.25em;
+}
+
+form fieldset div p {
+	display: inline-block;
+	width: 224px;
+}
+
+form input[type="button"], form a {
+	width: 224px;
+	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
+	font-size: 1em;
+}
+
+.black {
+	color: black;
+}
+.red {
+	color: indianred;
 }

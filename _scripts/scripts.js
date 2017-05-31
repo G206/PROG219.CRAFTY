@@ -1,9 +1,11 @@
 // Some of the Code and Logic for player controls and movements were from the Crafty JS Asteroid Demo Game
-
+// "use strict";
 // Global Game Variable Object
 var gameVar = {
-	canvasW: 1200,
-	canvasH: 1200,
+	canvasW: 900,
+	canvasH: 900,
+	canvasScale: 1,
+	canvasFollow: false,
 	score: 0,
 	hitPoint: 10,
     //keep a count of asteroids
@@ -15,13 +17,29 @@ var gameVar = {
 	rockL: 150,
 	rockM: 64,
 	rockS: 32,
-	enemyMaxSpeed: 10,
-	asteroidMaxSpeed: 5
+	maxAsteroids: 3,
+	maxEnemies: 1,
+	maxEnemySpeed: 5,
+	maxAsteroidSpeed: 5,
+	hitPointEnemy: 3
 };
 
 var theGame = document.getElementById('game');
 
-window.onload = function gameStart() {
+function setSettings() {
+	gameVar.canvasW = parseInt(document.getElementById('canvasWidth').value);
+	gameVar.canvasH = parseInt(document.getElementById('canvasHeight').value);
+	gameVar.canvasScale = parseInt(document.getElementById('canvasScale').value);
+	gameVar.canvasFollow = document.getElementById('viewportFollow').checked;
+	gameVar.maxAsteroids = parseInt(document.getElementById('maxAsteroids').value);
+	gameVar.maxAsteroidSpeed = parseInt(document.getElementById('maxAsteroidSpeed').value);
+	gameVar.maxEnemies = parseInt(document.getElementById('maxEnemies').value);
+	gameVar.maxEnemySpeed = parseInt(document.getElementById('maxEnemySpeed').value);
+	gameVar.hitPoint = parseInt(document.getElementById('hitPointPlayer').value);
+	gameVar.hitPointEnemy = parseInt(document.getElementById('hitPointEnemy').value);
+}
+
+// window.onload = function gameStart() {
 	// HTML Element variables
 	// var buttonStart = $("btnStart");
 	// var buttonReStart = $("btnReStart");
@@ -74,7 +92,7 @@ window.onload = function gameStart() {
 
 	    removeControls();
 	    //Initialize Game Canvas
-	    Crafty.init(900, 600, document.getElementById('game'));
+	    Crafty.init(gameVar.canvasW, gameVar.canvasH, document.getElementById('game'));
 	    Crafty.scene('firstGame');
 	}
 
@@ -88,7 +106,7 @@ window.onload = function gameStart() {
 		console.log("newGame fuction completed");
 
 	    removeControls();
-
+		Crafty.init(gameVar.canvasW, gameVar.canvasH, document.getElementById('game'));
 	    Crafty.scene('firstGame');
 	}
 
@@ -99,6 +117,7 @@ window.onload = function gameStart() {
 
 	    removeControls();
 	    Crafty.init(gameVar.canvasW, gameVar.canvasH, document.getElementById('game'));
+
 	    // Start second game scene
 	    Crafty.scene('secondGame');
 	}
@@ -123,6 +142,7 @@ window.onload = function gameStart() {
 	    addControls();
 	}
 
-	// window.onload = addControls();
-	addControls();
-};
+	window.onload = addControls();
+	// addControls();
+
+// };

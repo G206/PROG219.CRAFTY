@@ -10,6 +10,10 @@ var assetsObj = {
         'warpout': 'warpout.mp3'
     },
     'images': ['space.png','galaxy.jpg'],
+	// 'background': {
+	// 	'space': 'space.png',
+	// 	'galaxy': 'galaxy.jpg'
+	// },
     'sprites': {
         'ship.png': {
             'tile':  gameVar.shipSize,
@@ -55,6 +59,11 @@ var assetsObj = {
             'tile':  gameVar.enemyS,
             'tileh':  gameVar.enemyS,
             'map': { 'enemyS_r': [0,0]}
+        },
+		'space.png': {
+            'tile':  256,
+            'tileh':  256,
+            'map': { 'galaxy': [0,0]}
         }
     },
 };
@@ -66,14 +75,22 @@ Crafty.load(assetsObj);
 Crafty.c('Actor', {
     init: function () {
         this.requires('2D, Canvas');
+		this.z = 1;
     },
 });
 
 // A Star is just an Actor with a certain color
-Crafty.c('Star', {
+Crafty.c('ImageObject', {
     init: function () {
-        this.requires('Actor, Color, Solid')
-          .color('rgb(192, 192, 192)');
+		this.requires('2D, Canvas');
+		this.attr({
+			x: gameVar.canvasW / 4,
+			y: gameVar.canvasH / 4,
+			z: 0,
+			w: gameVar.canvasW,
+			h: gameVar.canvasH
+		});
+
     },
 });
 
@@ -88,10 +105,10 @@ Crafty.c('Rock', {
 			x: Crafty.math.randomInt(0, Crafty.viewport.width),
 			y: Crafty.math.randomInt(0, Crafty.viewport.height),
 			// xspeed and yspeed are velocity of the asteroid.
-			xspeed: Crafty.math.randomInt(1, gameVar.asteroidMaxSpeed),
-			yspeed: Crafty.math.randomInt(1, gameVar.asteroidMaxSpeed),
+			xspeed: Crafty.math.randomInt(1, gameVar.maxAsteroidSpeed),
+			yspeed: Crafty.math.randomInt(1, gameVar.maxAsteroidSpeed),
 			// rspeed is the rotational speed of the spin
-			rspeed: Crafty.math.randomInt(-gameVar.asteroidMaxSpeed, gameVar.asteroidMaxSpeed)
+			rspeed: Crafty.math.randomInt(-gameVar.maxAsteroidSpeed, gameVar.maxAsteroidSpeed)
 		})
 		.bind('EnterFrame', function() {
 			this.x += this.xspeed;
@@ -127,7 +144,7 @@ Crafty.c('Rock', {
 // Enemy Component
 Crafty.c('Enemy', {
 	init: function() {
-		this.requires('Actor, Collision');
+		this.requires('Actor');
 		// Origin determins pivot point of the object for movement.
 		this.origin('center');
 		this.attr({
@@ -135,146 +152,36 @@ Crafty.c('Enemy', {
 			x: Crafty.math.randomInt(0, Crafty.viewport.width),
 			y: Crafty.math.randomInt(0, Crafty.viewport.height),
 			// xspeed and yspeed are velocity of the enemy.
-			xspeed: Crafty.math.randomInt(1, 5),
-			yspeed: Crafty.math.randomInt(1, 5)
+			xspeed: Crafty.math.randomInt(1, gameVar.maxEnemySpeed),
+			yspeed: Crafty.math.randomInt(1, gameVar.maxEnemySpeed)
 		})
 		.bind('EnterFrame', function() {
-			var enemyRotation = Crafty.math.randomInt(-1, 1);
+			var enemyRotation = Crafty.math.randomInt(0, 2);
 			this.x += this.xspeed;
 			this.y += this.yspeed;
 			this.rotation += enemyRotation * 5;
 
 			// Determines variable to use for different rock sizes
 			var enemySize;
-			if (this.has('rock_L')) {
-				enemySize = gameVar.rockL;
-			} else if (this.has('rock_M')) {
-				enemySize = gameVar.rockM;
-			} else if (this.has('rock_S')) {
-				enemySize = gameVar.rockS;
+			if (this.has('enemyL_g') || this.has('enemyL_b')) {
+				enemySize = gameVar.enemyL;
+			} else if (this.has('enemyS_b') || this.has('enemyS_r')) {
+				enemySize = gameVar.enemyS;
 			}
 			// Determines when to go off screen and reapear on the other side of the canvas
 			if(this._x > Crafty.viewport.width) {
-				this.x = -rockSize;
+				this.x = -enemySize;
 			}
-			if(this._x < -rockSize) {
+			if(this._x < -enemySize) {
 				this.x =  Crafty.viewport.width;
 			}
 			if(this._y > Crafty.viewport.height) {
-				this.y = -rockSize;
+				this.y = -enemySize;
 			}
-			if(this._y < -rockSize) {
+			if(this._y < -enemySize) {
 				this.y = Crafty.viewport.height;
 			}
+
 		});
 	}
 });
-
-// Crafty.c('playerShip', {
-//     init: function(){
-//         // Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
-//         this.requires('Actor, ship, Controls');
-//         this.origin('center');
-//         this.attr({
-//             x:Crafty.viewport.width * ((Math.random() * 0.6) + 0.2),
-//             y:Crafty.viewport.height * ((Math.random() * 0.6) + 0.2),
-//             // w:20,
-//             // h:40,
-//             // Move object is a collection of possible move property values to determine what actions are allowed and bound to keyboard action.
-//             move: {left: false, right: false, up: false, down: false},
-//             // xspeed and yspeed is used determine speed of the player object. Starts at 0 stationary
-//             xspeed: 0,
-//             yspeed: 0,
-//             decay: 0.95, // Variable to control rate of slow down when forward move is stopped. Higher value adds more perpetual motion. 1 value is no slow down.
-//             score: 0,
-//             hp: 10      // Hit Point counter
-//         })
-//         // .color('blue')
-//         // Bind keyboard down press event to call move functions - boolean true triggers function
-//         .bind('KeyDown', function(e) {
-//             //on keydown, set the move booleans
-//             if(e.keyCode === Crafty.keys.RIGHT_ARROW) {
-//                 this.move.right = true;
-//             } else if(e.keyCode === Crafty.keys.LEFT_ARROW) {
-//                 this.move.left = true;
-//             } else if(e.keyCode === Crafty.keys.UP_ARROW) {
-//                 this.move.up = true;
-//             } else if (e.keyCode === Crafty.keys.SPACE) {
-//                 console.log('Blast');
-//
-//                 //create a missile entity
-//                 Crafty.e('2D, Canvas, missile')
-//                     .attr({
-//                         x: this._x + 40,
-//                         y: this._y + 40,
-//                         // w: 15,
-//                         // h: 15,
-//                         rotation: this._rotation,
-//                         // Speed of the missile - BOTH X & Y needs to match
-//                         xspeed: 15 * Math.sin(this._rotation / 57.3),
-//                         yspeed: 15 * Math.cos(this._rotation / 57.3)
-//                     })
-//                     // .color('rgb(255, 0, 0)')
-//                     // Binds action to EnterFrame event function in Crafty.js
-//                     .bind('EnterFrame', function() {
-//                         this.x += this.xspeed;
-//                         this.y -= this.yspeed;
-//
-//                         //destroy if it goes out of bounds
-//                         if(this._x > Crafty.viewport.width || this._x < 0 || this._y > Crafty.viewport.height || this._y < 0) {
-//                             this.destroy();
-//                         }
-//                     });
-//             }
-//         })
-//         // Bind keyboard up press event to stop move functions - boolean false triggers stop
-//         .bind('KeyUp', function(e) {
-//             //on key up, set the move booleans to false
-//             if(e.keyCode === Crafty.keys.RIGHT_ARROW) {
-//                 this.move.right = false;
-//             } else if(e.keyCode === Crafty.keys.LEFT_ARROW) {
-//                 this.move.left = false;
-//             } else if(e.keyCode === Crafty.keys.UP_ARROW) {
-//                 this.move.up = false;
-//             }
-//         })
-//         // Binds action to EnterFrame event function in Crafty.js
-//         // Combined with keyboard events, this is how the player is moved around the screen
-//         .bind('EnterFrame', function() {
-//             if(this.move.right) this.rotation += 5;
-//             if(this.move.left) this.rotation -= 5;
-//
-//             //acceleration and movement vector
-//             var vx = Math.sin(this._rotation * Math.PI / 180) * 0.3,
-//                 vy = Math.cos(this._rotation * Math.PI / 180) * 0.3;
-//
-//             //if the move up is true, increment the y/xspeeds
-//             if(this.move.up) {
-//                 this.yspeed -= vy;
-//                 this.xspeed += vx;
-//             } else {
-//                 //if released, slow down the ship
-//                 this.xspeed *= this.decay;
-//                 this.yspeed *= this.decay;
-//             }
-//
-//             //move the ship by the x and y speeds or movement vector
-//             this.x += this.xspeed;
-//             this.y += this.yspeed;
-//
-//             //if ship goes out of bounds, put him back
-//             if(this._x > Crafty.viewport.width) {
-//                 this.x = -64;
-//             }
-//             if(this._x < -64) {
-//                 this.x =  Crafty.viewport.width;
-//             }
-//             if(this._y > Crafty.viewport.height) {
-//                 this.y = -64;
-//             }
-//             if(this._y < -64) {
-//                 this.y = Crafty.viewport.height;
-//             }
-//         });
-//     }
-// });
