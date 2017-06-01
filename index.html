@@ -26,95 +26,66 @@
         	</header>
             <div class="">
                 <h2>You player character is the Galaga Ship. Your objective in stage one is to clear all Asteriods</h2>
+				<h3>Game Controls</h3>
+				<ol class="black">
+					<li>
+						ARROW keys are your primary controls.
+					</li>
+					<li>
+						LEFT and RIGHT keys control Rotation.
+					</li>
+					<li>
+						UP key controls Forward thrust.
+					</li>
+					<li>
+						SPACE bar controls Missile Fire
+					</li>
+				</ol>
             </div>
             <div>
                 <h2>Click on the START button below to start the game</h2>
             </div>
-            <div>
+            <p class="widthShort center">
                 <input id="btnStart" type="button" value="START" class="btn btn-primary splashButton" />
-            </div>
-			<div id="openSettings" class="black">
-				<form>
-					<h2>Game Settings</h2>
-					<fieldset>
-						<legend>
-							Graphics Display Settings
-						</legend>
-						<div>
-							<p>Game Canvas Width: </p>
-							<input id="canvasWidth" type="number" placeholder="Enter # in Pixels" value="900" />
-						</div>
-						<div>
-							<p>Game Canvas Height: </p>
-							<input id="canvasHeight" type="number" placeholder="Enter # in Pixels" value="900" />
-						</div>
-						<div>
-							<p>Game Canvas Scale: </p>
-							<input id="canvasScale" type="number" placeholder="Enter #. 1 = 100%" value="1" />
-						</div>
-						<div>
-							<p>Player On-Center in View: </p>
-							<input id="viewportFollow" type="checkbox" />
-						</div>
-					</fieldset>
-					<fieldset>
-						<legend>
-							Game Difficulty Settings
-						</legend>
-						<div>
-							<p>Max Number of Asteroids: </p>
-							<input id="maxAsteroids" type="number" placeholder="Enter Max #" value="3" />
-						</div>
-						<div>
-							<p>Max Speed of Asteroids: </p>
-							<input id="maxAsteroidSpeed" type="number" placeholder="Enter Max #" value="5" />
-						</div>
-						<div>
-							<p>Max Number of Enemies: </p>
-							<input id="maxEnemies" type="number" placeholder="Enter Max #" value="1" />
-						</div>
-						<div>
-							<p>Max Speed of Enemies: </p>
-							<input id="maxEnemySpeed" type="number" placeholder="Enter Max #" value="5" />
-						</div>
-						<div>
-							<p>Player Hit Points: </p>
-							<input id="hitPointPlayer" type="number" placeholder="Enter Hit Points" value="30" />
-						</div>
-						<div>
-							<p>Enemy Hit Points: </p>
-							<input id="hitPointEnemy" type="number" placeholder="Enter Hit Points" value="3" />
-						</div>
-					</fieldset>
-					<p>
-						<input type="button" value="Click to Set Settings" class="btn btn-primary" onclick="setSettings()" />
-					</p>
-					<p>
-						<a href="#close" title="Close" class="btn btn-success">Click to Close Window</a>
-					</p>
-				</form>
-			</div>
-
+            </p>
             <!--	Footer Copyright-->
             <footer class="black">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
         </div>
         <!-- Splash Screen for Level Change -->
         <div id="splashLevel" class="splash">
+            <p class="black">
+                 <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
+            </p>
             <header>
         		<h1>Galaga Derby</h1>
         	</header>
-            <h2>NEXT LEVEL</h2>
-            <ol>
-                <li>
-                    Enemy Ships Added
-                </li>
-
-            </ol>
-            <input id="btnNewLevel" type="button" value="Start Next Level"  class="btn btn-primary splashButton" />
+            <div>
+				<div>
+					<h2>Score for Level 1: <span id="score1" class="black"></span></h2>
+				</div>
+				<h2>NEXT LEVEL</h2>
+				<ol class="black">
+	                <li>
+	                    Enemy Ships Added - Kamakazi Style. Small Ships have 1 Hit Point. Large Ships Hit Points are determined by game settings.
+	                </li>
+					<li>
+						Warp Capability Added - Press 'W' KEY - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
+					</li>
+					<li>
+						Much higher level of forward perpetual motion due to forward thrust.
+					</li>
+	            </ol>
+			</div>
+            <p class="widthShort center">
+                <input id="btnNewLevel" type="button" value="Start Next Level"  class="btn btn-primary splashButton" />
+            </p>
 			<!--	Footer Copyright-->
             <footer class="black">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
         </div>
         <div id="splashEnd" class="splash">
+			<p class="black">
+                 <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
+            </p>
             <header>
         		<h1>Galaga Derby</h1>
         	</header>
@@ -124,15 +95,79 @@
             <div>
                 <h2>Game Over. Hope you had fun.</h2>
             </div>
-                <h2>Final Score: <span id="score" class="black"></span></h2>
+			<div>
+				<h2>Score for Level 2: <span id="score2" class="black"></span></h2>
+			</div>
             <div>
                 <h2>Click on the START button below if you wish to play again</h2>
             </div>
-            <div>
+            <p class="widthShort center">
                 <input id="btnReStart" type="button" value="START" class="btn btn-primary splashButton" />
-            </div>
+            </p>
+
 			<!--	Footer Copyright-->
             <footer class="black">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
+        </div>
+        <div id="openSettings" class="black">
+            <form>
+                <h2>Game Settings</h2>
+                <fieldset>
+                    <legend>
+                        Graphics Display Settings
+                    </legend>
+                    <div>
+                        <p>Game Canvas Width: </p>
+                        <input id="canvasWidth" type="number" placeholder="Enter # in Pixels" value="1100" />
+                    </div>
+                    <div>
+                        <p>Game Canvas Height: </p>
+                        <input id="canvasHeight" type="number" placeholder="Enter # in Pixels" value="900" />
+                    </div>
+                    <div>
+                        <p>Game Canvas Scale: </p>
+                        <input id="canvasScale" type="number" placeholder="Enter #. 1 = 100%" value="1" />
+                    </div>
+                    <div>
+                        <p>Player On-Center in View: </p>
+                        <input id="viewportFollow" type="checkbox" />
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        Game Difficulty Settings
+                    </legend>
+                    <div>
+                        <p>Max Number of Asteroids: </p>
+                        <input id="maxAsteroids" type="number" placeholder="Enter Max #" value="2" />
+                    </div>
+                    <div>
+                        <p>Max Speed of Asteroids: </p>
+                        <input id="maxAsteroidSpeed" type="number" placeholder="Enter Max #" value="5" />
+                    </div>
+                    <div>
+                        <p>Max Number of Enemies: </p>
+                        <input id="maxEnemies" type="number" placeholder="Enter Max #" value="1" />
+                    </div>
+                    <div>
+                        <p>Max Speed of Enemies: </p>
+                        <input id="maxEnemySpeed" type="number" placeholder="Enter Max #" value="2" />
+                    </div>
+                    <div>
+                        <p>Player Hit Points: </p>
+                        <input id="hitPointPlayer" type="number" placeholder="Enter Hit Points" value="10" />
+                    </div>
+                    <div>
+                        <p>Enemy Hit Points: </p>
+                        <input id="hitPointEnemy" type="number" placeholder="Enter Hit Points" value="3" />
+                    </div>
+                </fieldset>
+                <p>
+                    <input type="button" value="Click to Set Settings" class="btn btn-primary" onclick="setSettings()" />
+                </p>
+                <p>
+                    <a href="#close" title="Close" class="btn btn-success">Click to Close Window</a>
+                </p>
+            </form>
         </div>
     </div>
 

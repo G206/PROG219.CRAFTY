@@ -141,7 +141,7 @@ Crafty.c('Rock', {
 	}
 });
 
-// Enemy Component
+// Enemy Large Component
 Crafty.c('Enemy', {
 	init: function() {
 		this.requires('Actor');
@@ -153,35 +153,27 @@ Crafty.c('Enemy', {
 			y: Crafty.math.randomInt(0, Crafty.viewport.height),
 			// xspeed and yspeed are velocity of the enemy.
 			xspeed: Crafty.math.randomInt(1, gameVar.maxEnemySpeed),
-			yspeed: Crafty.math.randomInt(1, gameVar.maxEnemySpeed)
-		})
-		.bind('EnterFrame', function() {
-			var enemyRotation = Crafty.math.randomInt(0, 2);
-			this.x += this.xspeed;
-			this.y += this.yspeed;
-			this.rotation += enemyRotation * 5;
+			yspeed: Crafty.math.randomInt(1, gameVar.maxEnemySpeed),
+		});
+	}
+});
 
-			// Determines variable to use for different rock sizes
-			var enemySize;
-			if (this.has('enemyL_g') || this.has('enemyL_b')) {
-				enemySize = gameVar.enemyL;
-			} else if (this.has('enemyS_b') || this.has('enemyS_r')) {
-				enemySize = gameVar.enemyS;
-			}
-			// Determines when to go off screen and reapear on the other side of the canvas
-			if(this._x > Crafty.viewport.width) {
-				this.x = -enemySize;
-			}
-			if(this._x < -enemySize) {
-				this.x =  Crafty.viewport.width;
-			}
-			if(this._y > Crafty.viewport.height) {
-				this.y = -enemySize;
-			}
-			if(this._y < -enemySize) {
-				this.y = Crafty.viewport.height;
-			}
+// Enemy Large Component
+Crafty.c('EnemyL', {
+	init: function() {
+		this.requires('Actor, Enemy');
+		this.attr({
+            hp: gameVar.hitPointEnemy
+		});
+	}
+});
 
+// Enemy Small Component
+Crafty.c('EnemyS', {
+	init: function() {
+		this.requires('Actor, Enemy');
+		this.attr({
+			hp: 1
 		});
 	}
 });

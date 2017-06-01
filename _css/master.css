@@ -16,7 +16,7 @@ div.splash {
 	position: relative;
 	/*top: 128px;
 	left: 64px;*/
-	margin: 10% auto;
+	margin: 48px auto;
 	width: 80%;
 	border: 1px solid red;
 	border-radius: 16px;
@@ -27,19 +27,19 @@ div.splash {
 }
 
 div.splash div {
-	margin: 16px 0;
+	margin: 16px;
 }
 
 .splashButton {
 	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
-	margin: 18px 0 0 0;
+	margin: 18px 0 12px 0;
 	width: 100%;
 	font-size: 1.5em;
 	color: red;
 }
 
 header {
-	margin: 12px 24px;
+	margin: 12px 16px;
 	background-color: inherit;
 	color: white;
 	font-size: 1.5em;
@@ -52,7 +52,9 @@ header {
       -1px 1px 0 #000,
        1px 1px 0 #000;
 }
-
+header h1 {
+	margin: 0;
+}
 /*ID Specific Styling*/
 div[id="splashLevel"], div[id="splashEnd"] {
 	display: none;
@@ -85,9 +87,9 @@ div.modalBox {
 
 #openSettings {
 	position: absolute;
-	top: 96px;
-	right: 24px;
-	left: 24px;
+	top: 144px;
+	right: 12%;
+	left: 12%;
 	border: 1px solid blue;
 	border-radius: 16px;
 	background: white;
@@ -105,7 +107,7 @@ div.modalBox {
 }
 
 form {
-	margin: 5%;
+	margin: 3.5%;
 }
 
 form fieldset legend {
@@ -129,4 +131,12 @@ form input[type="button"], form a {
 }
 .red {
 	color: indianred;
+}
+
+.center {
+	margin: 0 auto;
+}
+
+.widthShort {
+	width: 90%;
 }

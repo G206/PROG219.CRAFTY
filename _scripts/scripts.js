@@ -2,7 +2,7 @@
 // "use strict";
 // Global Game Variable Object
 var gameVar = {
-	canvasW: 900,
+	canvasW: 1100,
 	canvasH: 900,
 	canvasScale: 1,
 	canvasFollow: false,
@@ -10,16 +10,16 @@ var gameVar = {
 	hitPoint: 10,
     //keep a count of asteroids
     asteroidCount: 0,
-    lastCount: 0,
+    enemyCount: 0,
 	shipSize: 82,
 	enemyL: 72,
 	enemyS: 64,
 	rockL: 150,
 	rockM: 64,
 	rockS: 32,
-	maxAsteroids: 3,
+	maxAsteroids: 2,
 	maxEnemies: 1,
-	maxEnemySpeed: 5,
+	maxEnemySpeed: 2,
 	maxAsteroidSpeed: 5,
 	hitPointEnemy: 3
 };
@@ -29,7 +29,7 @@ var theGame = document.getElementById('game');
 function setSettings() {
 	gameVar.canvasW = parseInt(document.getElementById('canvasWidth').value);
 	gameVar.canvasH = parseInt(document.getElementById('canvasHeight').value);
-	gameVar.canvasScale = parseInt(document.getElementById('canvasScale').value);
+	gameVar.canvasScale = parseFloat(document.getElementById('canvasScale').value);
 	gameVar.canvasFollow = document.getElementById('viewportFollow').checked;
 	gameVar.maxAsteroids = parseInt(document.getElementById('maxAsteroids').value);
 	gameVar.maxAsteroidSpeed = parseInt(document.getElementById('maxAsteroidSpeed').value);
@@ -55,6 +55,8 @@ function setSettings() {
 	var splashStart = document.getElementById('splashStart');
 	var screenLevel = document.getElementById('splashLevel');
 	var splashEnd = document.getElementById('splashEnd');
+	var scoreOutput1 = document.getElementById('score1');
+	var scoreOutput2 = document.getElementById('score2');
 
 
 	// buttonStart.click(function () {
@@ -72,14 +74,14 @@ function setSettings() {
 
 	function addControls () {
 	    // buttonStart.addEventListener('click', startGame, false);
-	    buttonStart.addEventListener('click', newLevel, false);
+	    buttonStart.addEventListener('click', newGame, false);
 	    buttonReStart.addEventListener('click', newGame, false);
 	    buttonNewLevel.addEventListener('click', newLevel, false);
 	}
 
 	function removeControls() {
 	    // buttonStart.removeEventListener('click', startGame, false);
-	    buttonStart.removeEventListener('click', newLevel, false);
+	    buttonStart.removeEventListener('click', newGame, false);
 	    buttonReStart.removeEventListener('click', newGame, false);
 	    buttonNewLevel.removeEventListener('click', newLevel, false);
 	}
@@ -114,7 +116,10 @@ function setSettings() {
 	function newLevel() {
 	    modalContainer.style.opacity = '0';
 		theGame.style.pointerEvents = 'auto';
-
+		// Reset Score
+		gameVar.score = 0;
+		// Reset Hit Points
+		gameVar.hitPoint = parseInt(document.getElementById('hitPointPlayer').value);
 	    removeControls();
 	    Crafty.init(gameVar.canvasW, gameVar.canvasH, document.getElementById('game'));
 
@@ -124,6 +129,7 @@ function setSettings() {
 
 	// Function to exit game screen
 	function exitLevel() {
+		scoreOutput1.textContent = gameVar.score;
 	    splashStart.style.display = 'none';
 		screenLevel.style.display = 'block';
 		modalContainer.style.opacity = '1';
@@ -134,7 +140,9 @@ function setSettings() {
 
 	// Function to exit game screen
 	function exitGame() {
+		scoreOutput2.textContent = gameVar.score;
 	    splashStart.style.display = 'none';
+		screenLevel.style.display = 'none';
 		splashEnd.style.display = 'block';
 		modalContainer.style.opacity = '1';
 		theGame.style.pointerEvents = 'none';
@@ -142,6 +150,7 @@ function setSettings() {
 	    addControls();
 	}
 
+	// window.onload = setSettings();
 	window.onload = addControls();
 	// addControls();
 
