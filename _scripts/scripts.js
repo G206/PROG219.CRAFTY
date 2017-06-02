@@ -2,7 +2,7 @@
 // "use strict";
 // Global Game Variable Object
 var gameVar = {
-	canvasW: 1100,
+	canvasW: 1200,
 	canvasH: 900,
 	canvasScale: 1,
 	canvasFollow: false,
@@ -17,14 +17,12 @@ var gameVar = {
 	rockL: 150,
 	rockM: 64,
 	rockS: 32,
-	maxAsteroids: 2,
-	maxEnemies: 1,
+	maxAsteroids: 5,
+	maxEnemies: 2,
 	maxEnemySpeed: 2,
 	maxAsteroidSpeed: 5,
 	hitPointEnemy: 3
 };
-
-var theGame = document.getElementById('game');
 
 function setSettings() {
 	gameVar.canvasW = parseInt(document.getElementById('canvasWidth').value);
@@ -40,112 +38,107 @@ function setSettings() {
 }
 
 // window.onload = function gameStart() {
-	// HTML Element variables
-	// var buttonStart = $("btnStart");
-	// var buttonReStart = $("btnReStart");
-	// var modalContainer = $("modalSplash");
-	// var splashStart = $("splashStart");
-	// var splashEnd = $("splashEnd");
-	// var theGame = $("game");
 
+	var gameCanvas = document.getElementById('game');
 	var buttonStart = document.getElementById('btnStart');
 	var buttonNewLevel = document.getElementById('btnNewLevel');
-	var buttonReStart = document.getElementById('btnReStart');
+	var buttonReStart1 = document.getElementById('btnReStart1');
+	var buttonReStart2 = document.getElementById('btnReStart2');
 	var modalContainer = document.getElementById('modalSplash');
 	var splashStart = document.getElementById('splashStart');
 	var screenLevel = document.getElementById('splashLevel');
 	var splashEnd = document.getElementById('splashEnd');
+	var endOutput1 = document.getElementById('endOutput1');
+	var endOutput2 = document.getElementById('endOutput2');
 	var scoreOutput1 = document.getElementById('score1');
 	var scoreOutput2 = document.getElementById('score2');
-
-
-	// buttonStart.click(function () {
-	//     // modalContainer.css("opacity", "0");
-	// 	// theGame.css("pointerEvents", "auto");
-	//
-	//     Crafty.enterScene("firstGame");
-	// });
-	//
-	// buttonReStart.click(function () {
-	//     // modalContainer.css("opacity", "0");
-	// 	// theGame.css("pointerEvents", "auto");
-	//
-	// });
+	var scoreDisplay = document.getElementById('score');
+	var hpDisplay = document.getElementById('hitPoint');
+	hpDisplay.textContent = gameVar.hitPoint; 
 
 	function addControls () {
-	    // buttonStart.addEventListener('click', startGame, false);
 	    buttonStart.addEventListener('click', newGame, false);
-	    buttonReStart.addEventListener('click', newGame, false);
+	    buttonReStart1.addEventListener('click', newGame, false);
+		buttonReStart2.addEventListener('click', newLevel, false);
 	    buttonNewLevel.addEventListener('click', newLevel, false);
 	}
 
 	function removeControls() {
-	    // buttonStart.removeEventListener('click', startGame, false);
 	    buttonStart.removeEventListener('click', newGame, false);
-	    buttonReStart.removeEventListener('click', newGame, false);
+	    buttonReStart1.removeEventListener('click', newGame, false);
+		buttonReStart2.removeEventListener('click', newLevel, false);
 	    buttonNewLevel.removeEventListener('click', newLevel, false);
-	}
-	function startGame() {
-		// splashStart.style.display = 'none';
-		// theGame.style.display = 'flex';
-		// modalContainer.style.display = 'none';
-		modalContainer.style.opacity = '0';
-		theGame.style.pointerEvents = 'auto';
-
-	    removeControls();
-	    //Initialize Game Canvas
-	    Crafty.init(gameVar.canvasW, gameVar.canvasH, document.getElementById('game'));
-	    Crafty.scene('firstGame');
 	}
 
 	// Function to start New Game and Reinitialize all parameters
 	function newGame() {
-		// splashEnd.style.display = 'none';
-		// theGame.style.display = 'flex';
+		removeControls();
 		modalContainer.style.opacity = '0';
-		theGame.style.pointerEvents = 'auto';
+		gameCanvas.style.pointerEvents = 'auto';
 
-		console.log("newGame fuction completed");
+		// Reset all game stats
+		gameVar.score = 0;
+		gameVar.asteroidCount = 0;
+		gameVar.enemyCount = 0;
+		gameVar.hitPoint = parseInt(document.getElementById('hitPointPlayer').value);
 
-	    removeControls();
-		Crafty.init(gameVar.canvasW, gameVar.canvasH, document.getElementById('game'));
+		Crafty.init(gameVar.canvasW, gameVar.canvasH, gameCanvas);
+		// Start Level 1 game scene
 	    Crafty.scene('firstGame');
 	}
 
 	// Function to start second game level
 	function newLevel() {
+		removeControls();
 	    modalContainer.style.opacity = '0';
-		theGame.style.pointerEvents = 'auto';
-		// Reset Score
-		gameVar.score = 0;
-		// Reset Hit Points
-		gameVar.hitPoint = parseInt(document.getElementById('hitPointPlayer').value);
-	    removeControls();
-	    Crafty.init(gameVar.canvasW, gameVar.canvasH, document.getElementById('game'));
+		gameCanvas.style.pointerEvents = 'auto';
 
-	    // Start second game scene
+		// Reset all game stats
+		gameVar.score = 0;
+		gameVar.asteroidCount = 0;
+		gameVar.enemyCount = 0;
+		gameVar.hitPoint = parseInt(document.getElementById('hitPointPlayer').value);
+
+	    Crafty.init(gameVar.canvasW, gameVar.canvasH, gameCanvas);
+
+	    // Start Level 2 game scene
 	    Crafty.scene('secondGame');
 	}
 
 	// Function to exit game screen
 	function exitLevel() {
+		// Set score for display for Level 1
 		scoreOutput1.textContent = gameVar.score;
-	    splashStart.style.display = 'none';
+		// Set message for display if WON or lOST
+		if (gameVar.hitPoint <=0) {
+			endOutput1.textContent = "You LOST. You need more practice";
+		} else {
+			endOutput1.textContent = "You WON. Try playing on a harder setting.";
+		}
+		splashStart.style.display = 'none';
 		screenLevel.style.display = 'block';
+		splashEnd.style.display = 'none';
 		modalContainer.style.opacity = '1';
-		theGame.style.pointerEvents = 'none';
+		gameCanvas.style.pointerEvents = 'none';
 
 	    addControls();
 	}
 
 	// Function to exit game screen
 	function exitGame() {
+		// Set score for display for Level 2
 		scoreOutput2.textContent = gameVar.score;
+		// Set message for display if WON or lOST
+		if (gameVar.hitPoint <=0) {
+			endOutput2.textContent = "You LOST. You need more practice";
+		} else {
+			endOutput2.textContent = "You WON. Try playing on a harder setting.";
+		}
 	    splashStart.style.display = 'none';
 		screenLevel.style.display = 'none';
 		splashEnd.style.display = 'block';
 		modalContainer.style.opacity = '1';
-		theGame.style.pointerEvents = 'none';
+		gameCanvas.style.pointerEvents = 'none';
 
 	    addControls();
 	}

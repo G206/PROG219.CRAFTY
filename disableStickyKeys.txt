@@ -1,0 +1,16 @@
+Make the following changes to your Registry.
+ 
+1.     Disable Sticky Keys 
+[HKEY_CURRENT_USER\Control Panel\Accessibility\StickyKeys]
+“Flags”=”506?
+2.     Disable Filter Keys 
+[HKEY_CURRENT_USER\Control Panel\Accessibility\Keyboard Response]
+“Flags”=”122?
+3.     Disable Toggle Keys 
+[HKEY_CURRENT_USER\Control Panel\Accessibility\ToggleKeys]
+“Flags”=”58?
+ 
+Note: one can completely disable accessibility options by renaming/deleting the registry-node Accessibility (above)
+Hope it helps.
+ 
+After change is done, LOG OFF and LOG back on or just restart PC.

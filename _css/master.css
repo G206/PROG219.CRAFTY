@@ -8,6 +8,10 @@ body {
 	color: white;
 }
 
+li {
+	font-weight: bold;
+}
+
 footer {
 	margin: 6px;
 }
@@ -35,14 +39,14 @@ div.splash div {
 	margin: 18px 0 12px 0;
 	width: 100%;
 	font-size: 1.5em;
-	color: red;
+	color: black;
 }
 
 header {
-	margin: 12px 16px;
+	margin: 12px 24px;
 	background-color: inherit;
 	color: white;
-	font-size: 1.5em;
+	/*font-size: 1.5em;*/
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
 	text-shadow:
@@ -139,4 +143,20 @@ form input[type="button"], form a {
 
 .widthShort {
 	width: 90%;
+}
+
+.scoreLine, .HPLine {
+	position: fixed;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+.scoreLine {
+	color: gold;
+	top: 24px;
+	left: 20px;
+}
+.HPLine {
+	color: red;
+	top: 54px;
+	left: 20px;
 }

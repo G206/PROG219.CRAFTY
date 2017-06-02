@@ -25,7 +25,7 @@
         		<h1>Galaga Derby</h1>
         	</header>
             <div class="">
-                <h2>You player character is the Galaga Ship. Your objective in stage one is to clear all Asteriods</h2>
+                <h3>You player character is the Galaga Ship. Your objective in stage one is to clear all Asteriods</h3>
 				<h3>Game Controls</h3>
 				<ol class="black">
 					<li>
@@ -38,12 +38,12 @@
 						UP key controls Forward thrust.
 					</li>
 					<li>
-						SPACE bar controls Missile Fire
+						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank'>LINK</a>. 
 					</li>
 				</ol>
             </div>
             <div>
-                <h2>Click on the START button below to start the game</h2>
+                <h3>Click on the START button below to start the game</h3>
             </div>
             <p class="widthShort center">
                 <input id="btnStart" type="button" value="START" class="btn btn-primary splashButton" />
@@ -60,16 +60,17 @@
         		<h1>Galaga Derby</h1>
         	</header>
             <div>
-				<div>
-					<h2>Score for Level 1: <span id="score1" class="black"></span></h2>
-				</div>
-				<h2>NEXT LEVEL</h2>
+                <h3 id="endOutput1" class="black"></h3>
+            </div>
+            <div>
+				<h3>Level 1 Final Score <span id="score1" class="black"></span></h3>
+				<h3>NEXT LEVEL</h3>
 				<ol class="black">
 	                <li>
 	                    Enemy Ships Added - Kamakazi Style. Small Ships have 1 Hit Point. Large Ships Hit Points are determined by game settings.
 	                </li>
 					<li>
-						Warp Capability Added - Press 'W' KEY - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
+						Warp Capability Added - Press SPACE Bar Key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
 					</li>
 					<li>
 						Much higher level of forward perpetual motion due to forward thrust.
@@ -90,19 +91,20 @@
         		<h1>Galaga Derby</h1>
         	</header>
             <div>
-                <h2 id="endOutput" class="black"></h2>
+                <h3 id="endOutput2" class="black"></h3>
             </div>
             <div>
-                <h2>Game Over. Hope you had fun.</h2>
+                <h3>Game Over. Hope you had fun.</h3>
             </div>
 			<div>
-				<h2>Score for Level 2: <span id="score2" class="black"></span></h2>
+				<h3>Level 2 Final Score <span id="score2" class="black"></span></h3>
 			</div>
             <div>
-                <h2>Click on the START button below if you wish to play again</h2>
+                <h3>Click on the button below if you wish to play again. Choose which Level below.</h3>
             </div>
             <p class="widthShort center">
-                <input id="btnReStart" type="button" value="START" class="btn btn-primary splashButton" />
+                <input id="btnReStart1" type="button" value="Start Level 1" class="btn btn-primary splashButton" />
+				<input id="btnReStart2" type="button" value="Start Level 2" class="btn btn-danger splashButton" />
             </p>
 
 			<!--	Footer Copyright-->
@@ -117,7 +119,7 @@
                     </legend>
                     <div>
                         <p>Game Canvas Width: </p>
-                        <input id="canvasWidth" type="number" placeholder="Enter # in Pixels" value="1100" />
+                        <input id="canvasWidth" type="number" placeholder="Enter # in Pixels" value="1200" />
                     </div>
                     <div>
                         <p>Game Canvas Height: </p>
@@ -138,7 +140,7 @@
                     </legend>
                     <div>
                         <p>Max Number of Asteroids: </p>
-                        <input id="maxAsteroids" type="number" placeholder="Enter Max #" value="2" />
+                        <input id="maxAsteroids" type="number" placeholder="Enter Max #" value="5" />
                     </div>
                     <div>
                         <p>Max Speed of Asteroids: </p>
@@ -146,7 +148,7 @@
                     </div>
                     <div>
                         <p>Max Number of Enemies: </p>
-                        <input id="maxEnemies" type="number" placeholder="Enter Max #" value="1" />
+                        <input id="maxEnemies" type="number" placeholder="Enter Max #" value="2" />
                     </div>
                     <div>
                         <p>Max Speed of Enemies: </p>
@@ -170,7 +172,12 @@
             </form>
         </div>
     </div>
-
+    <div class="scoreLine">
+        Score: <span id="score">0</span>
+    </div>
+    <div class="HPLine">
+        Hit Points: <span id="hitPoint">10</span>
+    </div>
     <main id="game" class="gameMain">
 
     </main>

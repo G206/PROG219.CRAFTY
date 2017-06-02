@@ -1,4 +1,5 @@
 Crafty.scene('firstGame', function() {
+	console.log('Level 1 Game Called');
     // Background - Space
     // Crafty.background("url('_images/space.png')");
 
@@ -8,37 +9,6 @@ Crafty.scene('firstGame', function() {
 	// Variable to store initial player X & Y random position
 	var playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 	var playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
-
-    //score display
-    var score = Crafty.e('2D, DOM, Text')
-        .text('Score: ' + gameVar.score)
-        .attr({w: 200, h:30})
-        .textColor('gold')
-		.textFont({
-			size: '1.25em',
-			weight: 'bold',
-			family: 'Rockwell'
-		})
-		.css({
-			position: 'fixed',
-			top: '20px',
-			left: '20px'
-		});
-    //Hit Point display
-    var hitPoint = Crafty.e('2D, DOM, Text')
-        .text('Hit Point: ' + gameVar.hitPoint)
-        .attr({w: 200, h:30})
-        .textColor('red')
-		.textFont({
-			size: '1.25em',
-			weight: 'bold',
-			family: 'Rockwell'
-		})
-		.css({
-			position: 'fixed',
-			top: '50px',
-			left: '20px'
-		});
 
     var player = Crafty.e('Actor, ship, Collision')
         .attr({
@@ -51,7 +21,7 @@ Crafty.scene('firstGame', function() {
             // xspeed and yspeed is used determine speed of the player object. Starts at 0 stationary
     		xspeed: 0,
     		yspeed: 0,
-    		decay: 0.91, // Variable to control rate of slow down when forward move is stopped. Higher value adds more perpetual motion. 1 value is no slow down.
+    		decay: 0.93, // Variable to control rate of slow down when forward move is stopped. Higher value adds more perpetual motion. 1 value is no slow down.
     	})
         // .color('blue')
         // Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
@@ -65,7 +35,7 @@ Crafty.scene('firstGame', function() {
     			this.move.left = true;
     		} else if(e.keyCode === Crafty.keys.UP_ARROW) {
     			this.move.up = true;
-    		} else if (e.keyCode === Crafty.keys.SPACE) {
+    		} else if (e.keyCode === Crafty.keys.CTRL || e.keyCode === Crafty.keys.SHIFT) {
     			console.log('Missile Fire');
 				Crafty.audio.play('blast');
 
@@ -168,7 +138,7 @@ Crafty.scene('firstGame', function() {
 				console.log('Missile Hits Aseroid');
                 // if hit by a missile increment the score
                 gameVar.score += 1;
-                score.text('Score: '+ gameVar.score);
+                scoreDisplay.textContent = gameVar.score;
 				// Play Explosion Audio
 				Crafty.audio.play('explosion');
 				//destroy the missile
@@ -206,14 +176,15 @@ Crafty.scene('firstGame', function() {
 				console.log('Ship Collision');
                 // if destroyed by ship collision increment the score, decrease HP
                 gameVar.score += 1;
-                score.text('Score: '+ gameVar.score);
+                scoreDisplay.textContent = gameVar.score;
                 gameVar.hitPoint -= 1;
-                hitPoint.text('HitPoint: '+ gameVar.hitPoint);
+                hpDisplay.textContent = gameVar.hitPoint;
 				// Play Collision Audio
 				Crafty.audio.play('collision');
 
                 // End Game if HP is at 0
                 if (gameVar.hitPoint <= 0) {
+					player.destroy();
                     exitLevel();
                 }
 
@@ -248,6 +219,9 @@ Crafty.scene('firstGame', function() {
 
     //function to fill the screen with asteroids by a random amount
     function initRocks(lower, upper) {
+		if (upper < lower) {
+			upper = lower;
+		}
         var rocks = Crafty.math.randomInt(lower, upper);
 		console.log("Initialize Asteroids: " + rocks);
         gameVar.asteroidCount = rocks;
@@ -256,8 +230,8 @@ Crafty.scene('firstGame', function() {
             Crafty.e('rock_L, asteroid');
         }
     }
-    //first level has between 1 and variable # specified by the Game Settings
-    initRocks(1, gameVar.maxAsteroids);
+    //first level has between 2 and variable # specified by the Game Settings
+    initRocks(2, gameVar.maxAsteroids);
 
 
 	Crafty.viewport.clampToEntities = false;

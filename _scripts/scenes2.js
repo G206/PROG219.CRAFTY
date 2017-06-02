@@ -1,36 +1,16 @@
 // "use strict";
 
 Crafty.defineScene('secondGame', function() {
+	console.log('Level 2 Game Called');
 	// Background - Space
     // Crafty.background("url('_images/galaxy.jpg') no-repeat center");
-	// theGame.style.backgroundSize = "cover";
+	// gameCanvas.style.backgroundSize = "cover";
 	var backgroundAsset = Crafty.e('ImageObject, Image')
 		.image("_images/star.png");
 
 	// Variable to store initial player X & Y random position
 	var playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 	var playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
-
-    //score display
-    var score = Crafty.e('2D, DOM, Text')
-        .text('Score: 0')
-        .attr({x: Crafty.viewport.width - 125, y: Crafty.viewport.height - 50, w: 200, h:50})
-        .textColor('gold')
-		.textFont({
-			size: '1.25em',
-			weight: 'bold',
-			family: 'Rockwell'
-		});
-    //Hit Point display
-    var hitPoint = Crafty.e('2D, DOM, Text')
-        .text('Hit Point: 10')
-        .attr({x: Crafty.viewport.width - 125, y: Crafty.viewport.height - 25, w: 200, h:50})
-        .textColor('red')
-		.textFont({
-			size: '1.25em',
-			weight: 'bold',
-			family: 'Rockwell'
-		});
 
     var player = Crafty.e('Actor, ship, Collision')
         .attr({
@@ -57,7 +37,7 @@ Crafty.defineScene('secondGame', function() {
     			this.move.left = true;
     		} else if(e.keyCode === Crafty.keys.UP_ARROW) {
     			this.move.up = true;
-    		} else if (e.keyCode === Crafty.keys.SPACE) {
+    		} else if (e.keyCode === Crafty.keys.CTRL || e.keyCode === Crafty.keys.SHIFT) {
     			console.log('Missile Fire');
 				Crafty.audio.play('blast');
 
@@ -93,7 +73,7 @@ Crafty.defineScene('secondGame', function() {
 					}
 				});
 			// Function for WARP Key
-    		} else if (e.keyCode === Crafty.keys.W) {
+    		} else if (e.keyCode === Crafty.keys.SPACE) {
 				console.log('Warp Out');
 				Crafty.audio.play('warpout');
 				// Random X & Y - Greater Canvas Area for Warping
@@ -171,7 +151,7 @@ Crafty.defineScene('secondGame', function() {
 				console.log('Missile Hits Aseroid');
                 // if hit by a missile increment the score
                 gameVar.score += 1;
-                score.text('Score: '+ gameVar.score);
+                scoreDisplay.textContent = gameVar.score;
 				// Play Explosion Audio
 				Crafty.audio.play('explosion');
 				//destroy the missile
@@ -209,14 +189,15 @@ Crafty.defineScene('secondGame', function() {
 				console.log('Ship Collision');
                 // if destroyed by ship collision increment the score, decrease HP
                 gameVar.score += 1;
-                score.text('Score: '+ gameVar.score);
+                scoreDisplay.textContent = gameVar.score;
                 gameVar.hitPoint -= 1;
-                hitPoint.text('HitPoint: '+ gameVar.hitPoint);
+                hpDisplay.textContent = gameVar.hitPoint;
 				// Play Collision Audio
 				Crafty.audio.play('collision');
 
                 // End Game if HP is at 0
                 if (gameVar.hitPoint <= 0) {
+					player.destroy();
                     exitGame();
                 }
 
@@ -302,9 +283,7 @@ Crafty.defineScene('secondGame', function() {
 			// Collision with Missile destroys decreases enemy HP. If at 0, destroys itself
 			.onHit('missile', function(e) {
 				console.log('Missile Hits Enemy');
-				// if hit by a missile increment the score
-				gameVar.score += 1;
-				score.text('Score: '+ gameVar.score);
+
 				// Play Explosion Audio
 				Crafty.audio.play('explosion');
 				//destroy the missile
@@ -313,6 +292,9 @@ Crafty.defineScene('secondGame', function() {
 				this.hp -= 1;
 				if (this.hp <= 0) {
 					this.destroy();
+					// if destroyed by a missile increment the score
+					gameVar.score += 1;
+					scoreDisplay.textContent = gameVar.score;
 					// Decrease total enemy count
 					gameVar.enemyCount --;
 					// End Level if both Asteroid and Enemy count is at 0
@@ -327,15 +309,18 @@ Crafty.defineScene('secondGame', function() {
 				console.log('Ship Collision with Enemy');
 				// if destroyed by ship collision increment the score, decrease HP
 				gameVar.score += 1;
-				score.text('Score: '+ gameVar.score);
+				scoreDisplay.textContent = gameVar.score;
 				gameVar.hitPoint -= 1;
-				hitPoint.text('HitPoint: '+ gameVar.hitPoint);
+				hpDisplay.textContent = gameVar.hitPoint;
 				// Play Collision Audio
 				Crafty.audio.play('collision');
 				// Enemy looses HP and if at 0, is destroyed
 				this.hp -= 1;
 				if (this.hp <= 0) {
 					this.destroy();
+					// if destroyed by a missile increment the score
+					gameVar.score += 1;
+					scoreDisplay.textContent = gameVar.score;
 					// Decrease total enemy count
 					gameVar.enemyCount --;
 					// End Level if both Asteroid and Enemy count is at 0
@@ -345,6 +330,7 @@ Crafty.defineScene('secondGame', function() {
 				}
 				// End Game if HP is at 0
 				if (gameVar.hitPoint <= 0) {
+					player.destroy();
 					exitGame();
 				}
 			});
@@ -373,6 +359,9 @@ Crafty.defineScene('secondGame', function() {
 
     //function to fill the screen with asteroids by a random amount
     function initRocks(lower, upper) {
+		if (upper < lower) {
+			upper = lower;
+		}
         var rocks = Crafty.math.randomInt(lower, upper);
 		console.log("Initialize Asteroids: " + rocks);
         gameVar.asteroidCount = rocks;
@@ -383,6 +372,9 @@ Crafty.defineScene('secondGame', function() {
     }
 	// function to fill screen with Large Enemy Ships
 	function initEnemyL(type, lower, upper) {
+		if (upper < lower) {
+			upper = lower;
+		}
 		var enemies = Crafty.math.randomInt(lower, upper);
 		console.log("Initialize Enemies L: " + enemies + " " + type);
 		gameVar.enemyCount += enemies;
@@ -393,6 +385,9 @@ Crafty.defineScene('secondGame', function() {
 	}
 	// function to fill screen with Small Enemy Ships
 	function initEnemyS(type, lower, upper) {
+		if (upper < lower) {
+			upper = lower;
+		}
 		var enemies = Crafty.math.randomInt(lower, upper);
 		console.log("Initialize Enemies S: " + enemies + " " + type);
 		gameVar.enemyCount += enemies;
@@ -402,7 +397,7 @@ Crafty.defineScene('secondGame', function() {
         }
 	}
     //first level has between 1 and variable # specified by the Game Settings
-    initRocks(1, gameVar.maxAsteroids);
+    initRocks(2, gameVar.maxAsteroids);
 	initEnemyL('enemyL_g', 1, gameVar.maxEnemies);
 	initEnemyL('enemyL_b', 1, gameVar.maxEnemies);
 	initEnemyS('enemyS_r', 1, gameVar.maxEnemies);
