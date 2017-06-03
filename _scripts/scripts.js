@@ -3,7 +3,7 @@
 // Global Game Variable Object
 var gameVar = {
 	canvasW: 1200,
-	canvasH: 900,
+	canvasH: 880,
 	canvasScale: 1,
 	canvasFollow: false,
 	score: 0,
@@ -11,7 +11,7 @@ var gameVar = {
     //keep a count of asteroids
     asteroidCount: 0,
     enemyCount: 0,
-	shipSize: 82,
+	shipSize: 78,
 	enemyL: 72,
 	enemyS: 64,
 	rockL: 150,
@@ -21,7 +21,10 @@ var gameVar = {
 	maxEnemies: 2,
 	maxEnemySpeed: 2,
 	maxAsteroidSpeed: 5,
-	hitPointEnemy: 3
+	hitPointEnemy: 3,
+	playerX: 0,
+	playerY: 0,
+	level: 0
 };
 
 function setSettings() {
@@ -54,7 +57,7 @@ function setSettings() {
 	var scoreOutput2 = document.getElementById('score2');
 	var scoreDisplay = document.getElementById('score');
 	var hpDisplay = document.getElementById('hitPoint');
-	hpDisplay.textContent = gameVar.hitPoint; 
+	hpDisplay.textContent = gameVar.hitPoint;
 
 	function addControls () {
 	    buttonStart.addEventListener('click', newGame, false);
@@ -81,6 +84,7 @@ function setSettings() {
 		gameVar.asteroidCount = 0;
 		gameVar.enemyCount = 0;
 		gameVar.hitPoint = parseInt(document.getElementById('hitPointPlayer').value);
+		gameVar.level = 1;
 
 		Crafty.init(gameVar.canvasW, gameVar.canvasH, gameCanvas);
 		// Start Level 1 game scene
@@ -98,6 +102,7 @@ function setSettings() {
 		gameVar.asteroidCount = 0;
 		gameVar.enemyCount = 0;
 		gameVar.hitPoint = parseInt(document.getElementById('hitPointPlayer').value);
+		gameVar.level = 2;
 
 	    Crafty.init(gameVar.canvasW, gameVar.canvasH, gameCanvas);
 
@@ -141,6 +146,20 @@ function setSettings() {
 		gameCanvas.style.pointerEvents = 'none';
 
 	    addControls();
+	}
+
+	// Function to exit current game level based on which level you're in
+	function exitCurrentLevel() {
+		switch (gameVar.level) {
+			case 1:
+				exitLevel();
+				break;
+			case 2:
+				exitGame();
+				break;
+			default:
+				break;
+		}
 	}
 
 	// window.onload = setSettings();

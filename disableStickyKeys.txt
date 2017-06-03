@@ -1,3 +1,5 @@
+If Disabling Sticky Keys through your Settings Panel -> Ease of Access GUI does NOT work, do the following:
+
 Make the following changes to your Registry.
  
 1.     Disable Sticky Keys 
