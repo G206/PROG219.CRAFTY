@@ -342,13 +342,13 @@ Crafty.c('PlayerShip', {
 				this.move.left = true;
 			} else if(e.keyCode === Crafty.keys.UP_ARROW) {
 				this.move.up = true;
-			} else if (e.keyCode === Crafty.keys.CTRL || e.keyCode === Crafty.keys.SHIFT) {
+			} else if (e.keyCode === Crafty.keys.CTRL || e.keyCode === Crafty.keys.SHIFT || e.keyCode === Crafty.keys.Z) {
 				// console.log('Missile Fire');
 				Crafty.audio.play('blast');
 
 				var currentShip = this;
 				//create a missile entity
-				Crafty.e('2D, Canvas, missile')
+				Crafty.e('Actor, missile')
 				.attr({
 					x: this._x + 40,
 					y: this._y + 40,

@@ -18,16 +18,16 @@
 	</header> -->
     <div id="modalSplash" class="modalBox">
         <div id="splashStart" class="splash">
-            <p class="black">
+            <p class="white">
                  <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
             </p>
             <header>
         		<h1>Galaga Derby</h1>
         	</header>
             <div class="">
-                <h3>You player character is the Galaga Ship. Your objective in stage one is to clear all Asteriods. Golden Star's are Power UP's. It will add additional hit points to your ship.</h3>
+                <h3>You player character is the Galaga Ship. Your objective in stage one is to clear all Asteriods. Golden Star's are Power UP's. It will add additional hit points to your ship. Careful though, firing upon the star will destroy it.</h3>
 				<h3>Game Controls</h3>
-				<ol class="black">
+				<ol class="white">
 					<li>
 						ARROW keys are your primary controls.
 					</li>
@@ -38,7 +38,7 @@
 						UP key controls Forward thrust.
 					</li>
 					<li>
-						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank'>LINK</a>.
+						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank'>LINK</a>. Z Key will also work as a backup fire key.
 					</li>
 				</ol>
             </div>
@@ -49,29 +49,32 @@
                 <input id="btnStart" type="button" value="START" class="btn btn-primary splashButton" />
             </p>
             <!--	Footer Copyright-->
-            <footer class="black">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
+            <footer class="white">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
         </div>
         <!-- Splash Screen for Level Change -->
         <div id="splashLevel" class="splash">
-            <p class="black">
+            <p class="white">
                  <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
             </p>
             <header>
         		<h1>Galaga Derby</h1>
         	</header>
             <div>
-                <h3 id="endOutput1" class="black"></h3>
+                <h3 id="endOutput1" class="white"></h3>
             </div>
             <div>
-				<h3>Level 1 Final Score <span id="score1" class="black"></span></h3>
+				<h3>Level 1 Final Score <span id="score1" class="white"></span></h3>
 				<h3>NEXT LEVEL</h3>
-				<ol class="black">
+				<ol class="white">
 	                <li>
 	                    Enemy Ships Added - Kamakazi Style. Small Ships have 1 Hit Point. Large Ships Hit Points are determined by game settings.
 	                </li>
 					<li>
 						Warp Capability Added - Press SPACE Bar Key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
 					</li>
+                    <li>
+                        RED Galaga ship similar to the Golden Star Power Up can be captured and used as additional FirePower. Careful though, firing upon the ship will destroy it.
+                    </li>
 					<li>
 						Much higher level of forward perpetual motion due to forward thrust.
 					</li>
@@ -81,23 +84,23 @@
                 <input id="btnNewLevel" type="button" value="Start Next Level"  class="btn btn-primary splashButton" />
             </p>
 			<!--	Footer Copyright-->
-            <footer class="black">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
+            <footer class="white">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
         </div>
         <div id="splashEnd" class="splash">
-			<p class="black">
+			<p class="white">
                  <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
             </p>
             <header>
         		<h1>Galaga Derby</h1>
         	</header>
             <div>
-                <h3 id="endOutput2" class="black"></h3>
+                <h3 id="endOutput2" class="white"></h3>
             </div>
             <div>
                 <h3>Game Over. Hope you had fun.</h3>
             </div>
 			<div>
-				<h3>Level 2 Final Score <span id="score2" class="black"></span></h3>
+				<h3>Level 2 Final Score <span id="score2" class="white"></span></h3>
 			</div>
             <div>
                 <h3>Click on the button below if you wish to play again. Choose which Level below.</h3>
@@ -108,10 +111,10 @@
             </p>
 
 			<!--	Footer Copyright-->
-            <footer class="black">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
+            <footer class="white">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
         </div>
-        <div id="openSettings" class="black">
-            <form>
+        <div id="openSettings" class="white">
+            <form class="black">
                 <h2>Game Settings</h2>
                 <fieldset>
                     <legend>
