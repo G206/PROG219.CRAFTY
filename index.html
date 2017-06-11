@@ -17,9 +17,9 @@
 		<h1>Galaga Derby</h1>
 	</header> -->
     <div id="modalSplash" class="modalBox">
-        <div id="splashStart" class="splash">
-            <p class="white">
-                 <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
+        <div id="splashStart" class="splash gold">
+            <p class="red">
+                 <a href="#openSettings"><i class="fa fa-cog gold" aria-hidden="true"></i></a> Administrative Game Settings
             </p>
             <header>
         		<h1>Galaga Derby</h1>
@@ -38,11 +38,17 @@
 						UP key controls Forward thrust.
 					</li>
 					<li>
-						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank'>LINK</a>. Z Key will also work as a backup fire key.
+						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank' class="gold">LINK</a>. Z Key will also work as a backup fire key.
 					</li>
 				</ol>
+                <h3 class="white">Notes</h3>
+                <ol class="gold">
+                    <li>
+                        This game is best played on Full HD / 1080P resolution or higher. You can adjust the canvas display size and display scaling through the Administrative Game Settings. It is recommended that you set the resolution as high as possible that will allow no scroll bars to be present.
+                    </li>
+                </ol>
             </div>
-            <div>
+            <div class="white">
                 <h3>Click on the START button below to start the game</h3>
             </div>
             <p class="widthShort center">
@@ -52,9 +58,9 @@
             <footer class="white">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
         </div>
         <!-- Splash Screen for Level Change -->
-        <div id="splashLevel" class="splash">
-            <p class="white">
-                 <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
+        <div id="splashLevel" class="splash gold">
+            <p class="red">
+                 <a href="#openSettings"><i class="fa fa-cog gold" aria-hidden="true"></i></a> Administrative Game Settings
             </p>
             <header>
         		<h1>Galaga Derby</h1>
@@ -86,9 +92,9 @@
 			<!--	Footer Copyright-->
             <footer class="white">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
         </div>
-        <div id="splashEnd" class="splash">
-			<p class="white">
-                 <a href="#openSettings"><i class="fa fa-cog red" aria-hidden="true"></i></a> Administrative Game Settings
+        <div id="splashEnd" class="splash gold">
+			<p class="red">
+                 <a href="#openSettings"><i class="fa fa-cog gold" aria-hidden="true"></i></a> Administrative Game Settings
             </p>
             <header>
         		<h1>Galaga Derby</h1>
@@ -142,7 +148,7 @@
                         Game Difficulty Settings
                     </legend>
                     <div>
-                        <p>Max Number of Asteroids: </p>
+                        <p>Max # of Asteroids (Random upto Max): </p>
                         <input id="maxAsteroids" type="number" placeholder="Enter Max #" value="5" />
                     </div>
                     <div>
@@ -150,7 +156,7 @@
                         <input id="maxAsteroidSpeed" type="number" placeholder="Enter Max #" value="5" />
                     </div>
                     <div>
-                        <p>Max Number of Enemies: </p>
+                        <p>Max # of Enemies (Random upto Max): </p>
                         <input id="maxEnemies" type="number" placeholder="Enter Max #" value="2" />
                     </div>
                     <div>
@@ -175,10 +181,10 @@
             </form>
         </div>
     </div>
-    <div class="scoreLine">
+    <div class="scoreLine gold">
         Score: <span id="score">0</span>
     </div>
-    <div class="HPLine">
+    <div class="HPLine red">
         Hit Points: <span id="hitPoint">10</span>
     </div>
     <main id="game" class="gameMain">

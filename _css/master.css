@@ -10,6 +10,7 @@ body {
 
 li {
 	font-weight: bold;
+	font-size: 1.15em;
 }
 
 footer {
@@ -25,7 +26,6 @@ div.splash {
 	border-radius: 16px;
 	background-color: rgba(64,64,64,.6);
 
-	color: gold;
 	padding: 12px 24px;
 	pointer-events: auto;
 }
@@ -124,11 +124,11 @@ form fieldset legend {
 
 form fieldset div p {
 	display: inline-block;
-	width: 224px;
+	width: 264px;
 }
 
 form input[type="button"], form a {
-	width: 224px;
+	width: 264px;
 	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
 	font-size: 1em;
 }
@@ -137,11 +137,15 @@ form input[type="button"], form a {
 	color: black;
 }
 .red {
-	color: indianred;
+	color: red;
 }
 
 .white {
 	color: white;
+}
+
+.gold {
+	color: gold;
 }
 
 .center {
@@ -158,12 +162,10 @@ form input[type="button"], form a {
 	font-size: 1.2em;
 }
 .scoreLine {
-	color: gold;
 	top: 24px;
 	left: 20px;
 }
 .HPLine {
-	color: red;
 	top: 54px;
 	left: 20px;
 }
