@@ -55,12 +55,12 @@ gameVar.canvasH =  (Math.max(window.innerHeight || 0) * 0.975);
 
 function setSettings() {
 	if (document.getElementById('canvasWidth').value === '') {
-		gameVar.canvasW = Math.max(window.innerWidth || 0);
+		gameVar.canvasW = (Math.max(window.innerWidth || 0) * 0.975);
 	} else {
 		gameVar.canvasW = parseInt(document.getElementById('canvasWidth').value);
 	}
 	if (document.getElementById('canvasHeight').value === '') {
-		gameVar.canvasH = Math.max(window.innerHeight || 0);
+		gameVar.canvasH = (Math.max(window.innerHeight || 0) * 0.975);
 	} else {
 		gameVar.canvasH = parseInt(document.getElementById('canvasHeight').value);
 	}

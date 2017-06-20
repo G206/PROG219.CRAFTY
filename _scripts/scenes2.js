@@ -8,12 +8,6 @@ Crafty.defineScene('secondGame', function() {
 	var backgroundAsset = Crafty.e('ImageObject, Image')
 		.image("_images/star.png");
 
-	Crafty.viewport.clampToEntities = false;
-	// Crafty.viewport.scale(gameVar.canvasScale);
-	if (gameVar.canvasFollow) {
-		Crafty.viewport.follow(player, 0, 0);
-	}
-
 	// Variable to store initial player X & Y random position
 	gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 	gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
@@ -180,6 +174,29 @@ Crafty.defineScene('secondGame', function() {
 					player.destroy();
 					exitCurrentLevel();
 				}
+
+				// Variable to determine which direction to go to find player
+				var distanceX = 0;
+				var distanceY = 0;
+
+	            if (this.y>player.y)
+	            {
+	                distanceY = (gameVar.shipSize * gameVar.canvasScale * 1.2);
+	            }
+	            if (this.y<player.y)
+	            {
+	                distanceY = - (gameVar.shipSize * gameVar.canvasScale * 1.2);
+	            }
+	            if (this.x>player.x)
+	            {
+	                distanceX = (gameVar.shipSize * gameVar.canvasScale * 1.2);
+	            }
+	            if (this.x<player.x)
+	            {
+	                distanceX = - (gameVar.shipSize * gameVar.canvasScale * 1.2);
+	            }
+	            this.x = this.x + distanceX;
+	            this.y = this.y + distanceY;
 			});
 		}
 	});
@@ -315,5 +332,10 @@ Crafty.defineScene('secondGame', function() {
 	initEnemyS('enemyS_b', 1, gameVar.maxEnemies);
 	// ADD Second Ship
 	initShip2();
+	Crafty.viewport.clampToEntities = false;
+	// Crafty.viewport.scale(gameVar.canvasScale);
+	if (gameVar.canvasFollow) {
+		Crafty.viewport.follow(player, 0, 0);
+	}
 
 });

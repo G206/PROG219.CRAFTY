@@ -6,12 +6,6 @@ Crafty.scene('firstGame', function() {
 	var backgroundAsset = Crafty.e('ImageObject, Image')
 		.image("_images/star.png");
 
-	Crafty.viewport.clampToEntities = false;
-	// Crafty.viewport.scale(gameVar.canvasScale);
-	if (gameVar.canvasFollow) {
-		Crafty.viewport.follow(player, 0, 0);
-	}
-
 	// Variable to store initial player X & Y random position
 	gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 	gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
@@ -112,40 +106,56 @@ Crafty.scene('firstGame', function() {
     }
 
 	// Function to add Second Player Ship
-	// function initShip2() {
-	// 	Crafty.e('shipRed, Ship2')
-	// 	.collision()
-    //     // Collision with ship Powers Up HP
-    //     .onHit('ship', function(e) {
-	// 		console.log('Ship PU Ship 2');
-    //         // if destroyed by ship collision increment the score, decrease HP
-    //         gameVar.score += 1;
-    //         gameVar.scoreDisplay.textContent = gameVar.score;
-	//
-	// 		// Play Collision Audio
-	// 		Crafty.audio.play('warpout');
-	//
-	// 		this.destroy();
-	// 		player.destroy();
-	// 		player = Crafty.e('PlayerShip, ship')
-	// 			.origin('center');
-	// 		var secondShip = Crafty.e('PlayerShip, shipRed')
-	// 			.origin('center')
-	// 			.attr({
-	// 				// x & y are set to player location
-	// 				x: player.x + gameVar.shipSize,
-	// 				y: player.y + gameVar.shipSize
-	// 			});
-	// 		if (gameVar.canvasFollow) {
-	// 			Crafty.viewport.follow(player, 0, 0);
-	// 		}
-    //     });
-	// }
+	function initShip2() {
+		Crafty.e('shipRed, Ship2')
+		.attr({
+			w: gameVar.shipSize * gameVar.canvasScale,
+			h: gameVar.shipSize * gameVar.canvasScale
+		})
+		.collision()
+		// Collision with ship Powers Up HP
+		.onHit('ship', function(e) {
+			console.log('Ship PU Ship 2');
+			// if destroyed by ship collision increment the score, decrease HP
+			gameVar.score += 1;
+			gameVar.scoreDisplay.textContent = gameVar.score;
+
+			// Play Collision Audio
+			Crafty.audio.play('warpout');
+
+			this.destroy();
+			player.destroy();
+			player = Crafty.e('PlayerShip, ship')
+				.attr({
+					w: gameVar.shipSize * gameVar.canvasScale,
+					h: gameVar.shipSize * gameVar.canvasScale
+				})
+				.origin('center');
+			var secondShip = Crafty.e('PlayerShip, shipRed')
+				.attr({
+					w: gameVar.shipSize * gameVar.canvasScale,
+					h: gameVar.shipSize * gameVar.canvasScale
+				})
+				.origin('center')
+				.attr({
+					// x & y are set to player location
+					x: player.x + (gameVar.shipSize * gameVar.canvasScale),
+					y: player.y + (gameVar.shipSize * gameVar.canvasScale)
+				});
+			if (gameVar.canvasFollow) {
+				Crafty.viewport.follow(player, 0, 0);
+			}
+		});
+	}
 
 
 	//first level has between 2 and variable # specified by the Game Settings
     initRocks(2, gameVar.maxAsteroids);
 	// ADD Second Ship
-	// initShip2();
-
+	initShip2();
+	Crafty.viewport.clampToEntities = false;
+	// Crafty.viewport.scale(gameVar.canvasScale);
+	if (gameVar.canvasFollow) {
+		Crafty.viewport.follow(player, 0, 0);
+	}
 });
