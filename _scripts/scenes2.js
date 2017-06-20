@@ -298,8 +298,8 @@ Crafty.defineScene('secondGame', function() {
 				.origin('center')
 				.attr({
 					// x & y are set to player location
-					x: player.x + gameVar.shipSize,
-					y: player.y + gameVar.shipSize
+					x: player.x + (gameVar.shipSize * gameVar.canvasScale),
+					y: player.y + (gameVar.shipSize * gameVar.canvasScale)
 				});
 			if (gameVar.canvasFollow) {
 				Crafty.viewport.follow(player, 0, 0);

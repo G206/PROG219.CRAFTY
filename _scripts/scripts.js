@@ -7,7 +7,7 @@ var gameVar = {
 	canvasH: 0,
 	canvasFollow: false,
 	score: 0,
-	initalHP: 100,
+	initalHP: 10,
 	hitPoint: 0,
 	//keep a count of asteroids
 	asteroidCount: 0,
