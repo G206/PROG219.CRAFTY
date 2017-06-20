@@ -6,6 +6,12 @@ Crafty.scene('firstGame', function() {
 	var backgroundAsset = Crafty.e('ImageObject, Image')
 		.image("_images/star.png");
 
+	Crafty.viewport.clampToEntities = false;
+	// Crafty.viewport.scale(gameVar.canvasScale);
+	if (gameVar.canvasFollow) {
+		Crafty.viewport.follow(player, 0, 0);
+	}
+
 	// Variable to store initial player X & Y random position
 	gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 	gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
@@ -13,6 +19,10 @@ Crafty.scene('firstGame', function() {
 	// Player Entity
 	var player = Crafty.e('PlayerShip, ship')
 		// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
+		.attr({
+			w: gameVar.shipSize * gameVar.canvasScale,
+			h: gameVar.shipSize * gameVar.canvasScale
+		})
 		.origin('center');
 
     //Asteroid component
@@ -28,9 +38,9 @@ Crafty.scene('firstGame', function() {
 				Crafty.audio.play('collision');
 				// if destroyed by ship collision increment the score, decrease HP
 				gameVar.score += 1;
-				scoreDisplay.textContent = gameVar.score;
+				gameVar.scoreDisplay.textContent = gameVar.score;
 				gameVar.hitPoint -= 1;
-				hpDisplay.textContent = gameVar.hitPoint;
+				gameVar.hpDisplay.textContent = gameVar.hitPoint;
 
 				// End Game if HP is at 0
 				if (gameVar.hitPoint <= 0) {
@@ -42,9 +52,17 @@ Crafty.scene('firstGame', function() {
                 //decide what size to make the asteroid
                 if(this.has('rock_L')) {
                     this.removeComponent('rock_L').addComponent('rock_M');
+					this.attr({
+						w: gameVar.rockM * gameVar.canvasScale,
+						h: gameVar.rockM * gameVar.canvasScale
+					});
                     size = 'rock_M';
                 } else if(this.has('rock_M')) {
                     this.removeComponent('rock_M').addComponent('rock_S');
+					this.attr({
+						w: gameVar.rockS * gameVar.canvasScale,
+						h: gameVar.rockS * gameVar.canvasScale
+					});
                     size = 'rock_S';
                 } else if(this.has('rock_S')) {
 					//if the lowest size, delete self and decrease total Asteroid Count
@@ -77,11 +95,19 @@ Crafty.scene('firstGame', function() {
         gameVar.asteroidCount = rocks;
 
         for(let i = 0; i < rocks; i++) {
-            Crafty.e('rock_L, asteroid');
+            Crafty.e('rock_L, asteroid')
+			.attr({
+				w: gameVar.rockL * gameVar.canvasScale,
+				h: gameVar.rockL * gameVar.canvasScale
+			});
         }
 
 		for(let i = 0; i < Math.floor(rocks/3); i++) {
-            Crafty.e('starPower, PowerUp');
+            Crafty.e('starPower, PowerUp')
+			.attr({
+				w: gameVar.powerUpSize * gameVar.canvasScale,
+				h: gameVar.powerUpSize * gameVar.canvasScale
+			});
         }
     }
 
@@ -94,7 +120,7 @@ Crafty.scene('firstGame', function() {
 	// 		console.log('Ship PU Ship 2');
     //         // if destroyed by ship collision increment the score, decrease HP
     //         gameVar.score += 1;
-    //         scoreDisplay.textContent = gameVar.score;
+    //         gameVar.scoreDisplay.textContent = gameVar.score;
 	//
 	// 		// Play Collision Audio
 	// 		Crafty.audio.play('warpout');
@@ -116,11 +142,6 @@ Crafty.scene('firstGame', function() {
     //     });
 	// }
 
-	Crafty.viewport.clampToEntities = false;
-	Crafty.viewport.scale(gameVar.canvasScale);
-	if (gameVar.canvasFollow) {
-		Crafty.viewport.follow(player, 0, 0);
-	}
 
 	//first level has between 2 and variable # specified by the Game Settings
     initRocks(2, gameVar.maxAsteroids);

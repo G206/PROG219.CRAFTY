@@ -22,8 +22,8 @@ var assetsObj = {
             'map': { 'shipRed': [0,0]}
         },
         'missile.png': {
-            'tile': 16,
-            'tileh': 28,
+            'tile': gameVar.missleW,
+            'tileh': gameVar.missleH,
             'map': {'missile': [0,0] }
         },
         'rock_L.png': {
@@ -85,7 +85,7 @@ Crafty.c('Actor', {
     },
 });
 
-// A Star is just an Actor with a certain color
+// Image Object is just an Actor with a fixed location
 Crafty.c('ImageObject', {
     init: function () {
 		this.requires('2D, Canvas');
@@ -150,7 +150,7 @@ Crafty.c('Rock', {
 			console.log('Missile Hits Aseroid');
 			// if hit by a missile increment the score
 			gameVar.score += 1;
-			scoreDisplay.textContent = gameVar.score;
+			gameVar.scoreDisplay.textContent = gameVar.score;
 			// Play Explosion Audio
 			Crafty.audio.play('explosion');
 			//destroy the missile
@@ -214,7 +214,7 @@ Crafty.c('Enemy', {
 				this.destroy();
 				// if destroyed by a missile increment the score
 				gameVar.score += 1;
-				scoreDisplay.textContent = gameVar.score;
+				gameVar.scoreDisplay.textContent = gameVar.score;
 				// Decrease total enemy count
 				gameVar.enemyCount --;
 				// End Level if both Asteroid and Enemy count is at 0
@@ -287,8 +287,8 @@ Crafty.c('Power', {
 Crafty.c('PowerUp', {
     init: function() {
         this.requires('Actor, Power, Collision');
-		this.w = 42;
-		this.h = 42;
+		this.w = gameVar.powerUpSize;
+		this.h = gameVar.powerUpSize;
         this.collision()
         // Collision with Missile destroys asteroid
         .onHit('missile', function(e) {
@@ -306,9 +306,9 @@ Crafty.c('PowerUp', {
 			console.log('Ship PU PowerUp');
             // if destroyed by ship collision increment the score, decrease HP
             gameVar.score += 1;
-            scoreDisplay.textContent = gameVar.score;
+            gameVar.scoreDisplay.textContent = gameVar.score;
             gameVar.hitPoint += 5;
-            hpDisplay.textContent = gameVar.hitPoint;
+            gameVar.hpDisplay.textContent = gameVar.hitPoint;
 			// Play Collision Audio
 			Crafty.audio.play('warpout');
 			this.destroy();
@@ -350,8 +350,10 @@ Crafty.c('PlayerShip', {
 				//create a missile entity
 				Crafty.e('Actor, missile')
 				.attr({
-					x: this._x + 40,
-					y: this._y + 40,
+					x: this._x + (40 * gameVar.canvasScale),
+					y: this._y + (40 * gameVar.canvasScale),
+                    w: gameVar.missleW * gameVar.canvasScale,
+        			h: gameVar.missleH * gameVar.canvasScale,
 					rotation: this._rotation,
 					// Speed of the missile - BOTH X & Y needs to match
 					xspeed: 15 * Math.sin(this._rotation / 57.3),

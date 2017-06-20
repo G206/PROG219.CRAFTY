@@ -8,6 +8,12 @@ Crafty.defineScene('secondGame', function() {
 	var backgroundAsset = Crafty.e('ImageObject, Image')
 		.image("_images/star.png");
 
+	Crafty.viewport.clampToEntities = false;
+	// Crafty.viewport.scale(gameVar.canvasScale);
+	if (gameVar.canvasFollow) {
+		Crafty.viewport.follow(player, 0, 0);
+	}
+
 	// Variable to store initial player X & Y random position
 	gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 	gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
@@ -15,6 +21,10 @@ Crafty.defineScene('secondGame', function() {
 	// Player Entity
 	var player = Crafty.e('PlayerShip, ship')
 		// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
+		.attr({
+			w: gameVar.shipSize * gameVar.canvasScale,
+			h: gameVar.shipSize * gameVar.canvasScale
+		})
 		.origin('center')
 		.bind('KeyDown', function(e) {
 			// Function for WARP Key
@@ -44,9 +54,9 @@ Crafty.defineScene('secondGame', function() {
 					Crafty.audio.play('collision');
 					// if destroyed by ship collision increment the score, decrease HP
 					gameVar.score += 1;
-					scoreDisplay.textContent = gameVar.score;
+					gameVar.scoreDisplay.textContent = gameVar.score;
 					gameVar.hitPoint -= 1;
-					hpDisplay.textContent = gameVar.hitPoint;
+					gameVar.hpDisplay.textContent = gameVar.hitPoint;
 
 					// End Game if HP is at 0
 					if (gameVar.hitPoint <= 0) {
@@ -55,12 +65,20 @@ Crafty.defineScene('secondGame', function() {
 					}
 
 	                var size;
-	                //decide what size to make the asteroid
+					//decide what size to make the asteroid
 	                if(this.has('rock_L')) {
 	                    this.removeComponent('rock_L').addComponent('rock_M');
+						this.attr({
+							w: gameVar.rockM * gameVar.canvasScale,
+							h: gameVar.rockM * gameVar.canvasScale
+						});
 	                    size = 'rock_M';
 	                } else if(this.has('rock_M')) {
 	                    this.removeComponent('rock_M').addComponent('rock_S');
+						this.attr({
+							w: gameVar.rockS * gameVar.canvasScale,
+							h: gameVar.rockS * gameVar.canvasScale
+						});
 	                    size = 'rock_S';
 	                } else if(this.has('rock_S')) {
 						//if the lowest size, delete self and decrease total Asteroid Count
@@ -68,7 +86,7 @@ Crafty.defineScene('secondGame', function() {
 						gameVar.asteroidCount --;
 						// End Level if both Asteroid and Enemy count is at 0
 		                if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
-							exitCurrentLevel();
+		                    exitCurrentLevel();
 		                }
 	                    return;
 	                }
@@ -138,9 +156,9 @@ Crafty.defineScene('secondGame', function() {
 				console.log('Ship Collision with Enemy');
 				// if destroyed by ship collision increment the score, decrease HP
 				gameVar.score += 1;
-				scoreDisplay.textContent = gameVar.score;
+				gameVar.scoreDisplay.textContent = gameVar.score;
 				gameVar.hitPoint -= 1;
-				hpDisplay.textContent = gameVar.hitPoint;
+				gameVar.hpDisplay.textContent = gameVar.hitPoint;
 				// Play Collision Audio
 				Crafty.audio.play('collision');
 				// Enemy looses HP and if at 0, is destroyed
@@ -149,7 +167,7 @@ Crafty.defineScene('secondGame', function() {
 					this.destroy();
 					// if destroyed by a missile increment the score
 					gameVar.score += 1;
-					scoreDisplay.textContent = gameVar.score;
+					gameVar.scoreDisplay.textContent = gameVar.score;
 					// Decrease total enemy count
 					gameVar.enemyCount --;
 					// End Level if both Asteroid and Enemy count is at 0
@@ -195,11 +213,19 @@ Crafty.defineScene('secondGame', function() {
 		console.log("Initialize Asteroids: " + rocks);
         gameVar.asteroidCount = rocks;
 
-        for(let i = 0; i < rocks; i++) {
-            Crafty.e('rock_L, asteroid');
+		for(let i = 0; i < rocks; i++) {
+            Crafty.e('rock_L, asteroid')
+			.attr({
+				w: gameVar.rockL * gameVar.canvasScale,
+				h: gameVar.rockL * gameVar.canvasScale
+			});
         }
-		for(let i = 0; i < Math.floor(rocks/1.5); i++) {
-            Crafty.e('starPower, PowerUp');
+		for(let i = 0; i < Math.floor(rocks/3); i++) {
+            Crafty.e('starPower, PowerUp')
+			.attr({
+				w: gameVar.powerUpSize * gameVar.canvasScale,
+				h: gameVar.powerUpSize * gameVar.canvasScale
+			});
         }
     }
 
@@ -213,7 +239,11 @@ Crafty.defineScene('secondGame', function() {
 		gameVar.enemyCount += enemies;
 
         for(let i = 0; i < enemies; i++) {
-            Crafty.e(type + ', EnemyShipL');
+            Crafty.e(type + ', EnemyShipL')
+			.attr({
+				w: gameVar.enemyL * gameVar.canvasScale,
+				h: gameVar.enemyL * gameVar.canvasScale
+			});
         }
 	}
 	// function to fill screen with Small Enemy Ships
@@ -226,20 +256,28 @@ Crafty.defineScene('secondGame', function() {
 		gameVar.enemyCount += enemies;
 
         for(let i = 0; i < enemies; i++) {
-            Crafty.e(type + ', EnemyShipS');
+            Crafty.e(type + ', EnemyShipS')
+			.attr({
+				w: gameVar.enemyS * gameVar.canvasScale,
+				h: gameVar.enemyS * gameVar.canvasScale
+			});
         }
 	}
 
 	// Function to add Second Player Ship
 	function initShip2() {
 		Crafty.e('shipRed, Ship2')
+		.attr({
+			w: gameVar.shipSize * gameVar.canvasScale,
+			h: gameVar.shipSize * gameVar.canvasScale
+		})
 		.collision()
 		// Collision with ship Powers Up HP
 		.onHit('ship', function(e) {
 			console.log('Ship PU Ship 2');
 			// if destroyed by ship collision increment the score, decrease HP
 			gameVar.score += 1;
-			scoreDisplay.textContent = gameVar.score;
+			gameVar.scoreDisplay.textContent = gameVar.score;
 
 			// Play Collision Audio
 			Crafty.audio.play('warpout');
@@ -247,8 +285,16 @@ Crafty.defineScene('secondGame', function() {
 			this.destroy();
 			player.destroy();
 			player = Crafty.e('PlayerShip, ship')
+				.attr({
+					w: gameVar.shipSize * gameVar.canvasScale,
+					h: gameVar.shipSize * gameVar.canvasScale
+				})
 				.origin('center');
 			var secondShip = Crafty.e('PlayerShip, shipRed')
+				.attr({
+					w: gameVar.shipSize * gameVar.canvasScale,
+					h: gameVar.shipSize * gameVar.canvasScale
+				})
 				.origin('center')
 				.attr({
 					// x & y are set to player location
@@ -259,12 +305,6 @@ Crafty.defineScene('secondGame', function() {
 				Crafty.viewport.follow(player, 0, 0);
 			}
 		});
-	}
-
-	Crafty.viewport.clampToEntities = false;
-	Crafty.viewport.scale(gameVar.canvasScale);
-	if (gameVar.canvasFollow) {
-		Crafty.viewport.follow(player, 0, 0);
 	}
 
 	//Second level has between 1 or 2 and variable # specified by the Game Settings

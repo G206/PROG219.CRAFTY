@@ -21,7 +21,7 @@ div.splash {
 	position: relative;
 	margin: 48px auto;
 	width: 80%;
-	height: 80%;
+	/*height: 80%;*/
 	border: 1px solid red;
 	border-radius: 16px;
 	background-color: rgba(64,64,64,.6);
@@ -71,7 +71,7 @@ div[id="splashLevel"], div[id="splashEnd"] {
 
 /* Code for Modal Styling */
 div.modalBox {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -125,6 +125,10 @@ form fieldset legend {
 form fieldset div p {
 	display: inline-block;
 	width: 264px;
+}
+
+form fieldset input {
+	width: 224px;
 }
 
 form input[type="button"], form a {
