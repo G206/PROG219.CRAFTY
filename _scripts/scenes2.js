@@ -22,7 +22,7 @@ Crafty.defineScene('secondGame', function() {
 		.origin('center')
 		.bind('KeyDown', function(e) {
 			// Function for WARP Key
-    		if (e.keyCode === Crafty.keys.SPACE) {
+    		if (e.keyCode === Crafty.keys.SPACE || e.keyCode === Crafty.keys.DOWN_ARROW) {
 				console.log('Warp Out');
 				Crafty.audio.play('warpout');
 				// Random X & Y - Greater Canvas Area for Warping
@@ -43,7 +43,11 @@ Crafty.defineScene('secondGame', function() {
 	            // Collision with ship damages ship and destroys asteroid
 	            .onHit('ship', function(e) {
 					console.log('Ship Collision at Asteroid Level');
-
+					// Explosion scene
+					Crafty.e('ExplosionSM').attr({
+						x:this.x-this.w,
+						y:this.y-this.h
+					});
 					// Play Collision Audio
 					Crafty.audio.play('collision');
 					// if destroyed by ship collision increment the score, decrease HP
@@ -54,6 +58,11 @@ Crafty.defineScene('secondGame', function() {
 
 					// End Game if HP is at 0
 					if (gameVar.hitPoint <= 0) {
+						// Explosion Scene
+						Crafty.e('ExplosionBG').attr({
+							x:this.x-this.w,
+							y:this.y-this.h
+						});
 						player.destroy();
 						exitCurrentLevel();
 					}
@@ -90,7 +99,7 @@ Crafty.defineScene('secondGame', function() {
 
 	                gameVar.asteroidCount ++;
 	                //split into two asteroids by creating another asteroid
-	                Crafty.e('2D, Canvas, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
+	                Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
 	            });
 	        }
 	    });
@@ -153,6 +162,11 @@ Crafty.defineScene('secondGame', function() {
 				gameVar.scoreDisplay.textContent = gameVar.score;
 				gameVar.hitPoint -= 1;
 				gameVar.hpDisplay.textContent = gameVar.hitPoint;
+				// Explosion Scene
+                Crafty.e('ExplosionBG').attr({
+                    x:this.x-this.w,
+                    y:this.y-this.h
+                });
 				// Play Collision Audio
 				Crafty.audio.play('collision');
 				// Enemy looses HP and if at 0, is destroyed
@@ -171,6 +185,11 @@ Crafty.defineScene('secondGame', function() {
 				}
 				// End Game if HP is at 0
 				if (gameVar.hitPoint <= 0) {
+					// Explosion Scene
+					Crafty.e('ExplosionBG').attr({
+						x:this.x-this.w,
+						y:this.y-this.h
+					});
 					player.destroy();
 					exitCurrentLevel();
 				}
@@ -306,7 +325,21 @@ Crafty.defineScene('secondGame', function() {
 					w: gameVar.shipSize * gameVar.canvasScale,
 					h: gameVar.shipSize * gameVar.canvasScale
 				})
-				.origin('center');
+				.origin('center')
+				.bind('KeyDown', function(e) {
+					// Function for WARP Key
+		    		if (e.keyCode === Crafty.keys.SPACE || e.keyCode === Crafty.keys.DOWN_ARROW) {
+						console.log('Warp Out');
+						Crafty.audio.play('warpout');
+						// Random X & Y - Greater Canvas Area for Warping
+						gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.7) + 0.2);
+						gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.7) + 0.2);
+
+						// Warp player to new X & Y
+						this.x = gameVar.playerX;
+						this.y = gameVar.playerY;
+					}
+		    	});
 			var secondShip = Crafty.e('PlayerShip, shipRed')
 				.attr({
 					w: gameVar.shipSize * gameVar.canvasScale,
@@ -317,7 +350,15 @@ Crafty.defineScene('secondGame', function() {
 					// x & y are set to player location
 					x: player.x + (gameVar.shipSize * gameVar.canvasScale),
 					y: player.y + (gameVar.shipSize * gameVar.canvasScale)
-				});
+				}).bind('KeyDown', function(e) {
+					// Function for WARP Key
+		    		if (e.keyCode === Crafty.keys.SPACE || e.keyCode === Crafty.keys.DOWN_ARROW) {
+
+						// Warp player to new X & Y
+						this.x = player.x + (gameVar.shipSize * gameVar.canvasScale);
+						this.y = player.y + (gameVar.shipSize * gameVar.canvasScale);
+					}
+		    	});
 			if (gameVar.canvasFollow) {
 				Crafty.viewport.follow(player, 0, 0);
 			}

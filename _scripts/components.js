@@ -70,18 +70,33 @@ var assetsObj = {
             'tile': 215,
             'tileh': 215,
             'map': {'starPower': [0,0]}
+        },
+        'explosion.png': {
+            'tile': 128,
+            'tileh': 128,
+            'map': {
+                'explosionL':[0,0],
+                'explosionM':[0,1],
+                'explosionS':[0,2]}
         }
     },
 };
 
 Crafty.load(assetsObj);
 
+
 // An 'Actor' is an entity that is drawn in 2D on canvas
-//  via our logical coordinate grid
 Crafty.c('Actor', {
     init: function () {
         this.requires('2D, Canvas');
 		this.z = 1;
+    },
+});
+
+// Actor to show Animation
+Crafty.c('ActorAnimated', {
+    init: function () {
+        this.requires('Actor, SpriteAnimation');
     },
 });
 
@@ -98,6 +113,46 @@ Crafty.c('ImageObject', {
 		});
 
     },
+});
+
+// Explosion components - 3 Sizes
+Crafty.c('ExplosionBG',{
+    init:function(){
+        this.addComponent('ActorAnimated, explosionL')
+        .reel('explodeL',600,0,0,16)
+
+        .animate('explodeL',1)
+        .bind('AnimationEnd',function(){
+            this.destroy();
+        });
+
+    }
+});
+
+Crafty.c('ExplosionMD',{
+    init:function(){
+        this.addComponent('ActorAnimated, explosionM')
+        .reel('explodeM',600,0,0,16)
+
+        .animate('explodeM',1)
+        .bind('AnimationEnd',function(){
+            this.destroy();
+        });
+
+    }
+});
+
+Crafty.c('ExplosionSM',{
+    init:function(){
+        this.addComponent('ActorAnimated, explosionS')
+        .reel('explodeS',600,0,0,16)
+
+        .animate('explodeS',1)
+        .bind('AnimationEnd',function(){
+            this.destroy();
+        });
+
+    }
 });
 
 //Asteroid component
@@ -148,6 +203,11 @@ Crafty.c('Rock', {
 		// Collision with Missile destroys asteroid
 		.onHit('missile', function(e) {
 			console.log('Missile Hits Aseroid');
+            // Explosion scene
+            Crafty.e('ExplosionSM').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
 			// if hit by a missile increment the score
 			gameVar.score += 1;
 			gameVar.scoreDisplay.textContent = gameVar.score;
@@ -165,8 +225,8 @@ Crafty.c('Rock', {
 				this.removeComponent('rock_M').addComponent('rock_S');
 				size = 'rock_S';
 			} else if(this.has('rock_S')) {
-				//if the lowest size, delete self and decrease total Asteroid Count
-				this.destroy();
+                //if the lowest size, delete self and decrease total Asteroid Count
+                this.destroy();
 				gameVar.asteroidCount --;
 				// End Level if both Asteroid and Enemy count is at 0
 				if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
@@ -181,7 +241,7 @@ Crafty.c('Rock', {
 
 			gameVar.asteroidCount++;
 			//split into two asteroids by creating another asteroid
-			Crafty.e('2D, Canvas, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
+			Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
 		});
 	}
 });
@@ -208,6 +268,11 @@ Crafty.c('Enemy', {
 			Crafty.audio.play('explosion');
 			//destroy the missile
 			e[0].obj.destroy();
+            // Explosion Scene
+            Crafty.e('ExplosionBG').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
 			// Enemy looses HP and if at 0, is destroyed
 			this.hp -= 1;
 			if (this.hp <= 0) {
@@ -293,7 +358,11 @@ Crafty.c('PowerUp', {
         // Collision with Missile destroys asteroid
         .onHit('missile', function(e) {
 			console.log('Missile Hits PowerUp');
-
+            // Explosion Scene
+            Crafty.e('ExplosionMD').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
 			// Play Explosion Audio
 			Crafty.audio.play('explosion');
 			//destroy the missile
@@ -451,7 +520,11 @@ Crafty.c('Ship2', {
         // Collision with Missile destroys asteroid
         .onHit('missile', function(e) {
 			console.log('Missile Hits PowerUp');
-
+            // Explosion Scene
+            Crafty.e('ExplosionMD').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
 			// Play Explosion Audio
 			Crafty.audio.play('explosion');
 			//destroy the missile

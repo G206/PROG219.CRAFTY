@@ -27,7 +27,11 @@ Crafty.scene('firstGame', function() {
             // Collision with ship damages ship and destroys asteroid
             .onHit('ship', function(e) {
 				console.log('Ship Collision at Asteroid Level');
-
+				// Explosion scene
+				Crafty.e('ExplosionSM').attr({
+					x:this.x-this.w,
+					y:this.y-this.h
+				});
 				// Play Collision Audio
 				Crafty.audio.play('collision');
 				// if destroyed by ship collision increment the score, decrease HP
@@ -38,6 +42,11 @@ Crafty.scene('firstGame', function() {
 
 				// End Game if HP is at 0
 				if (gameVar.hitPoint <= 0) {
+					// Explosion Scene
+					Crafty.e('ExplosionBG').attr({
+						x:this.x-this.w,
+						y:this.y-this.h
+					});
 					player.destroy();
 					exitCurrentLevel();
 				}
@@ -60,7 +69,7 @@ Crafty.scene('firstGame', function() {
                     size = 'rock_S';
                 } else if(this.has('rock_S')) {
 					//if the lowest size, delete self and decrease total Asteroid Count
-                    this.destroy();
+					this.destroy();
 					gameVar.asteroidCount --;
 					// End Level if both Asteroid and Enemy count is at 0
 	                if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
@@ -74,7 +83,7 @@ Crafty.scene('firstGame', function() {
 
                 gameVar.asteroidCount ++;
                 //split into two asteroids by creating another asteroid
-                Crafty.e('2D, Canvas, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
+                Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
             });
         }
     });

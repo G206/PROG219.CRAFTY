@@ -51,7 +51,7 @@ gameVar.hitPoint = gameVar.initalHP;
 gameVar.hpDisplay.textContent = gameVar.hitPoint;
 
 gameVar.canvasW = (Math.max(window.innerWidth || 0) * 0.975);
-gameVar.canvasH =  (Math.max(window.innerHeight || 0) * 0.975);
+gameVar.canvasH =  (Math.max(window.innerHeight || 0) * 0.97);
 
 function setSettings() {
 	if (document.getElementById('canvasWidth').value === '') {
@@ -60,7 +60,7 @@ function setSettings() {
 		gameVar.canvasW = parseInt(document.getElementById('canvasWidth').value);
 	}
 	if (document.getElementById('canvasHeight').value === '') {
-		gameVar.canvasH = (Math.max(window.innerHeight || 0) * 0.975);
+		gameVar.canvasH = (Math.max(window.innerHeight || 0) * 0.97);
 	} else {
 		gameVar.canvasH = parseInt(document.getElementById('canvasHeight').value);
 	}
