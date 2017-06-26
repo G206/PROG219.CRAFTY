@@ -28,7 +28,10 @@ var gameVar = {
 	hitPointEnemy: 3,
 	playerX: 0,
 	playerY: 0,
-	level: 0
+	level: 0,
+	ship2_180: false,
+	ship2_reverse: false,
+	ship2_independent: false
 };
 
 gameVar.gameCanvas = document.getElementById('game');
@@ -67,6 +70,10 @@ function setSettings() {
 
 	gameVar.canvasScale = parseFloat(document.getElementById('canvasScale').value);
 	gameVar.canvasFollow = document.getElementById('viewportFollow').checked;
+	gameVar.ship2_180 = document.getElementById('ship2_180').checked;
+	gameVar.ship2_reverse = document.getElementById('ship2_reverse').checked;
+	gameVar.ship2_independent = document.getElementById('ship2_independent').checked;
+
 	gameVar.maxAsteroids = parseInt(document.getElementById('maxAsteroids').value);
 	gameVar.maxAsteroidSpeed = parseInt(document.getElementById('maxAsteroidSpeed').value);
 	gameVar.maxEnemies = parseInt(document.getElementById('maxEnemies').value);
@@ -78,22 +85,21 @@ function setSettings() {
 }
 
 function addControls () {
-    gameVar.buttonStart.addEventListener('click', newGame, false);
-    gameVar.buttonReStart1.addEventListener('click', newGame, false);
-	gameVar.buttonReStart2.addEventListener('click', newLevel, false);
-    gameVar.buttonNewLevel.addEventListener('click', newLevel, false);
+    gameVar.buttonStart.addEventListener('click', gameLevel1, false);
+    gameVar.buttonReStart1.addEventListener('click', gameLevel1, false);
+	gameVar.buttonReStart2.addEventListener('click', gameLevel2, false);
+    gameVar.buttonNewLevel.addEventListener('click', gameLevel2, false);
 }
 
 function removeControls() {
-    gameVar.buttonStart.removeEventListener('click', newGame, false);
-    gameVar.buttonReStart1.removeEventListener('click', newGame, false);
-	gameVar.buttonReStart2.removeEventListener('click', newLevel, false);
-    gameVar.buttonNewLevel.removeEventListener('click', newLevel, false);
+    gameVar.buttonStart.removeEventListener('click', gameLevel1, false);
+    gameVar.buttonReStart1.removeEventListener('click', gameLevel1, false);
+	gameVar.buttonReStart2.removeEventListener('click', gameLevel2, false);
+    gameVar.buttonNewLevel.removeEventListener('click', gameLevel2, false);
 }
 
-// Function to start New Game and Reinitialize all parameters
-function newGame() {
-	removeControls();
+// Function to reset game variables
+function resetGame() {
 	gameVar.modalContainer.style.opacity = '0';
 	gameVar.gameCanvas.style.pointerEvents = 'auto';
 
@@ -102,31 +108,27 @@ function newGame() {
 	gameVar.asteroidCount = 0;
 	gameVar.enemyCount = 0;
 	gameVar.hitPoint = gameVar.initalHP;
-	gameVar.level = 1;
 	console.log("Canvas W: " + gameVar.canvasW );
 	console.log("Canvas H: " + gameVar.canvasH );
+}
+// Function to start New Game and Reinitialize all parameters
+function gameLevel1() {
+	removeControls();
+	resetGame();
+	gameVar.level = 1;
 	Crafty.init(gameVar.canvasW, gameVar.canvasH, gameVar.gameCanvas);
 	// Start Level 1 game scene
-	Crafty.scene('firstGame');
+	Crafty.scene('Game');
 }
 
 // Function to start second game level
-function newLevel() {
+function gameLevel2() {
 	removeControls();
-	gameVar.modalContainer.style.opacity = '0';
-	gameVar.gameCanvas.style.pointerEvents = 'auto';
-
-	// Reset all game stats
-	gameVar.score = 0;
-	gameVar.asteroidCount = 0;
-	gameVar.enemyCount = 0;
-	gameVar.hitPoint = gameVar.initalHP;
+	resetGame();
 	gameVar.level = 2;
-
 	Crafty.init(gameVar.canvasW, gameVar.canvasH, gameVar.gameCanvas);
-
 	// Start Level 2 game scene
-	Crafty.scene('secondGame');
+	Crafty.scene('Game');
 }
 
 // Function to exit game screen

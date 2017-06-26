@@ -137,6 +137,18 @@ form input[type="button"], form a {
 	font-size: 1em;
 }
 
+form fieldset .checkboxList p {
+	width: auto;
+}
+
+form input[type="checkbox"] {
+	width: 48px;
+}
+
+form input[type="radio"] {
+	width: 48px;
+}
+
 .black {
 	color: black;
 }

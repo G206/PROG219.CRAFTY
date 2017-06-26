@@ -1,4 +1,4 @@
-Crafty.scene('firstGame', function() {
+Crafty.scene('Game', function() {
 	console.log('Level 1 Game Called');
     // Background - Space
     // Crafty.background("url('_images/space.png')");
@@ -19,7 +19,7 @@ Crafty.scene('firstGame', function() {
 		})
 		.origin('center');
 
-    //Asteroid component
+	//Asteroid component
     Crafty.c('asteroid', {
         init: function() {
             this.requires('Actor, Rock, Collision');
@@ -140,28 +140,244 @@ Crafty.scene('firstGame', function() {
 					h: gameVar.shipSize * gameVar.canvasScale
 				})
 				.origin('center');
-			var secondShip = Crafty.e('PlayerShip, shipRed')
-				.attr({
-					w: gameVar.shipSize * gameVar.canvasScale,
-					h: gameVar.shipSize * gameVar.canvasScale
-				})
-				.origin('center')
-				.attr({
-					// x & y are set to player location
-					x: player.x + (gameVar.shipSize * gameVar.canvasScale),
-					y: player.y + (gameVar.shipSize * gameVar.canvasScale)
-				});
+			if (gameVar.level === 2) {
+				player.decay = 0.99;
+			}
+			var secondShip;
+			if (gameVar.ship2_reverse) {
+				secondShip = Crafty.e('ShipStaticR, shipRed');
+			} else if (gameVar.ship2_independent) {
+				secondShip = Crafty.e('ShipStaticI, shipRed');
+			} else {
+				secondShip = Crafty.e('ShipStatic, shipRed');
+			}
+			secondShip.attr({
+				w: gameVar.shipSize * gameVar.canvasScale,
+				h: gameVar.shipSize * gameVar.canvasScale
+			})
+			.origin('center')
+			.attr({
+				x: player.x + (gameVar.shipSize * gameVar.canvasScale),
+				y: player.y + (gameVar.shipSize * gameVar.canvasScale),
+
+			})
+			.bind('KeyDown', function(e) {
+				//on keydown, set the move booleans
+				if(e.keyCode === Crafty.keys.UP_ARROW) {
+					this.move.up = true;
+				}
+			})
+			.bind('KeyUp', function(e) {
+				//on key up, set the move booleans to false
+				if(e.keyCode === Crafty.keys.UP_ARROW) {
+					this.move.up = false;
+				}
+			})
+			.bind('EnterFrame', function() {
+				//move the ship by the x and y speeds or movement vector
+				if (gameVar.ship2_180) {
+					this.x = player.x;
+				} else {
+					this.x = player.x + (gameVar.shipSize * gameVar.canvasScale);
+				}
+				this.y = player.y + (gameVar.shipSize * gameVar.canvasScale);
+			});
+
+			if (gameVar.ship2_180) {
+				secondShip.rotation = 180;
+			}
+
 			if (gameVar.canvasFollow) {
 				Crafty.viewport.follow(player, 0, 0);
 			}
 		});
 	}
 
+	// function to fill screen with Large Enemy Ships
+	function initEnemyL(type, lower, upper) {
+		if (upper < lower) {
+			upper = lower;
+		}
+		var enemies = Crafty.math.randomInt(lower, upper);
+		console.log("Initialize Enemies L: " + enemies + " " + type);
+		gameVar.enemyCount += enemies;
+
+        for(let i = 0; i < enemies; i++) {
+            Crafty.e(type + ', EnemyShipL')
+			.attr({
+				w: gameVar.enemyL * gameVar.canvasScale,
+				h: gameVar.enemyL * gameVar.canvasScale
+			});
+        }
+	}
+	// function to fill screen with Small Enemy Ships
+	function initEnemyS(type, lower, upper) {
+		if (upper < lower) {
+			upper = lower;
+		}
+		var enemies = Crafty.math.randomInt(lower, upper);
+		console.log("Initialize Enemies S: " + enemies + " " + type);
+		gameVar.enemyCount += enemies;
+
+        for(let i = 0; i < enemies; i++) {
+            Crafty.e(type + ', EnemyShipS')
+			.attr({
+				w: gameVar.enemyS * gameVar.canvasScale,
+				h: gameVar.enemyS * gameVar.canvasScale
+			});
+        }
+	}
 
 	//first level has between 2 and variable # specified by the Game Settings
     initRocks(2, gameVar.maxAsteroids);
 	// ADD Second Ship
 	initShip2();
+
+	// MODS to Level 2 play
+	if (gameVar.level === 2) {
+		player.decay = 0.99;
+		//Enemy component
+		Crafty.c('EnemyShip', {
+			init: function() {
+				this.requires('Actor, Enemy, Collision');
+				this.bind('EnterFrame', function() {
+					// Variable to determine which direction to go to find player
+					var distanceX = 0;
+					var distanceY = 0;
+
+		            if (this.y>player.y)
+		            {
+		                distanceY = -this.yspeed;
+		            }
+		            if (this.y<player.y)
+		            {
+		                distanceY = this.yspeed;
+		            }
+		            if (this.x>player.x)
+		            {
+		                distanceX = -this.xspeed;
+		            }
+		            if (this.x<player.x)
+		            {
+		                distanceX = +this.xspeed;
+		            }
+		            this.x = this.x + distanceX;
+		            this.y = this.y + distanceY;
+
+					// Determines variable to use for different ship sizes
+					var enemySize;
+					if (this.has('enemyL_g') || this.has('enemyL_b')) {
+						enemySize = gameVar.enemyL;
+					} else if (this.has('enemyS_b') || this.has('enemyS_r')) {
+						enemySize = gameVar.enemyS;
+					}
+					// Determines when to go off screen and reapear on the other side of the canvas
+					if(this._x > Crafty.viewport.width) {
+						this.x = -enemySize;
+					}
+					if(this._x < -enemySize) {
+						this.x =  Crafty.viewport.width;
+					}
+					if(this._y > Crafty.viewport.height) {
+						this.y = -enemySize;
+					}
+					if(this._y < -enemySize) {
+						this.y = Crafty.viewport.height;
+					}
+				});
+				this.collision()
+				// Collision with ship damages ship and decreases enemy HP. If at 0, destroys itself
+				.onHit('ship', function(e) {
+					console.log('Ship Collision with Enemy');
+					// if destroyed by ship collision increment the score, decrease HP
+					gameVar.score += 1;
+					gameVar.scoreDisplay.textContent = gameVar.score;
+					gameVar.hitPoint -= 1;
+					gameVar.hpDisplay.textContent = gameVar.hitPoint;
+					// Explosion Scene
+	                Crafty.e('ExplosionBG').attr({
+	                    x:this.x-this.w,
+	                    y:this.y-this.h
+	                });
+					// Play Collision Audio
+					Crafty.audio.play('collision');
+					// Enemy looses HP and if at 0, is destroyed
+					this.hp -= 1;
+					if (this.hp <= 0) {
+						this.destroy();
+						// if destroyed by a missile increment the score
+						gameVar.score += 1;
+						gameVar.scoreDisplay.textContent = gameVar.score;
+						// Decrease total enemy count
+						gameVar.enemyCount --;
+						// End Level if both Asteroid and Enemy count is at 0
+						if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
+							exitCurrentLevel();
+						}
+					}
+					// End Game if HP is at 0
+					if (gameVar.hitPoint <= 0) {
+						// Explosion Scene
+						Crafty.e('ExplosionBG').attr({
+							x:this.x-this.w,
+							y:this.y-this.h
+						});
+						player.destroy();
+						exitCurrentLevel();
+					}
+
+					// Variable to determine which direction to go to find player
+					var distanceX = 0;
+					var distanceY = 0;
+
+		            if (this.y>player.y)
+		            {
+		                distanceY = (gameVar.shipSize * gameVar.canvasScale * 1.2);
+		            }
+		            if (this.y<player.y)
+		            {
+		                distanceY = - (gameVar.shipSize * gameVar.canvasScale * 1.2);
+		            }
+		            if (this.x>player.x)
+		            {
+		                distanceX = (gameVar.shipSize * gameVar.canvasScale * 1.2);
+		            }
+		            if (this.x<player.x)
+		            {
+		                distanceX = - (gameVar.shipSize * gameVar.canvasScale * 1.2);
+		            }
+		            this.x = this.x + distanceX;
+		            this.y = this.y + distanceY;
+				});
+			}
+		});
+
+		//Enemy Large component
+		Crafty.c('EnemyShipL', {
+			init: function() {
+				this.requires('Actor, EnemyShip');
+				this.attr({
+		            hp: gameVar.hitPointEnemy
+				});
+			}
+		});
+
+		//Enemy Small component
+		Crafty.c('EnemyShipS', {
+			init: function() {
+				this.requires('Actor, EnemyShip');
+				this.attr({
+					hp: 1
+				});
+			}
+		});
+
+		initEnemyL('enemyL_g', 1, gameVar.maxEnemies);
+		initEnemyL('enemyL_b', 1, gameVar.maxEnemies);
+		initEnemyS('enemyS_r', 1, gameVar.maxEnemies);
+		initEnemyS('enemyS_b', 1, gameVar.maxEnemies);
+	}
+
 	Crafty.viewport.clampToEntities = false;
 	// Crafty.viewport.scale(gameVar.canvasScale);
 	if (gameVar.canvasFollow) {

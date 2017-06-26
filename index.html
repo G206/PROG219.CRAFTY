@@ -38,11 +38,14 @@
 						UP key controls Forward thrust.
 					</li>
 					<li>
-						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank' class="gold">LINK</a>. Z Key will also work as a backup fire key.
+						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank' class="gold">LINK</a>. S & Z Keys will also work as a backup fire key.
 					</li>
                     <li>
-                        <span class="red">RED</span> Galaga ship similar to the Golden Star Power Up can be captured and used as additional FirePower. Careful though, firing upon the ship will destroy it.
+                        <span class="red">RED</span> Galaga ship similar to the Golden Star Power Up can be captured and used as additional FirePower. Careful though, firing upon the ship will destroy it. Optional configuration of how Ship 2 is played is in the Administration Panel.
                     </li>
+                    <li>
+						Warp Capability - Press SPACE Bar or DOWN Arrow Key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
+					</li>
 				</ol>
                 <h3 class="white">Notes</h3>
                 <ol class="gold">
@@ -78,9 +81,6 @@
 	                <li>
 	                    Enemy Ships Added - Kamakazi Style. Small Ships have 1 Hit Point. Large Ships Hit Points are determined by game settings.
 	                </li>
-					<li>
-						Warp Capability Added - Press SPACE Bar or DOWN Arrow Key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
-					</li>
 					<li>
 						Much higher level of forward perpetual motion due to forward thrust.
 					</li>
@@ -138,9 +138,15 @@
                         <p>Game Canvas Scale: </p>
                         <input id="canvasScale" type="number" placeholder="Enter #. 1 = 100%" value="0.6" />
                     </div>
-                    <div>
-                        <p>Player On-Center in View: </p>
+                    <div class="checkboxList">
+                        <p>Player On-Center in Viewport: </p>
                         <input id="viewportFollow" type="checkbox" />
+                        <p>Ship 2 180 DEG: </p>
+                        <input id="ship2_180" type="radio" name="ship2"/>
+                        <p>Ship 2 Reverse Turn: </p>
+                        <input id="ship2_reverse" type="radio" name="ship2" />
+                        <p>Ship 2 Independent (A & D Key control Ship 2): </p>
+                        <input id="ship2_independent" type="radio" name="ship2" />
                     </div>
                 </fieldset>
                 <fieldset>
@@ -202,9 +208,7 @@
 	</div> -->
 	<script src="_scripts/scripts.js"></script>
     <script src="_scripts/components.js"></script>
-    <script src="_scripts/scenesCommon.js"></script>
     <script src="_scripts/scenes.js"></script>
-    <script src="_scripts/scenes2.js"></script>
 
 </body>
 </html>
