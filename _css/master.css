@@ -65,7 +65,7 @@ div[id="splashLevel"], div[id="splashEnd"] {
 
 #game {
 	display: flex;
-	margin: 0 24px;
+	margin: 0 auto;
 	pointer-events: none;
 }
 
@@ -114,7 +114,7 @@ div.modalBox {
 }
 
 form {
-	margin: 3.5%;
+	margin: 1% 3.5%;
 }
 
 form fieldset legend {
@@ -183,5 +183,9 @@ form input[type="radio"] {
 }
 .HPLine {
 	top: 54px;
+	left: 20px;
+}
+.HPLine2 {
+	top: 84px;
 	left: 20px;
 }

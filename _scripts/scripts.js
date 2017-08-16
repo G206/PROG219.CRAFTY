@@ -5,7 +5,6 @@ var gameVar = {
 	canvasScale: 0.6,
 	canvasW: 0,
 	canvasH: 0,
-	canvasFollow: false,
 	score: 0,
 	initalHP: 10,
 	hitPoint: 0,
@@ -29,13 +28,18 @@ var gameVar = {
 	playerX: 0,
 	playerY: 0,
 	level: 0,
+	canvasFollow: false,
 	ship2_180: false,
 	ship2_reverse: false,
-	ship2_independent: false
+	ship2_independent: false,
+	onePlayer: document.getElementById('1P').checked,
+	twoPlayer: document.getElementById('2P').checked,
+	VSMode: false
 };
 
 gameVar.gameCanvas = document.getElementById('game');
 gameVar.buttonStart = document.getElementById('btnStart');
+gameVar.buttonPractice = document.getElementById('btnPracticeLevel');
 gameVar.buttonNewLevel = document.getElementById('btnNewLevel');
 gameVar.buttonReStart1 = document.getElementById('btnReStart1');
 gameVar.buttonReStart2 = document.getElementById('btnReStart2');
@@ -54,7 +58,11 @@ gameVar.hitPoint = gameVar.initalHP;
 gameVar.hpDisplay.textContent = gameVar.hitPoint;
 
 gameVar.canvasW = (Math.max(window.innerWidth || 0) * 0.975);
-gameVar.canvasH =  (Math.max(window.innerHeight || 0) * 0.97);
+gameVar.canvasH =  (Math.max(window.innerHeight || 0) * 0.96);
+
+if (gameVar.twoPlayer) {
+	gameVar.VSMode = true;
+}
 
 function setSettings() {
 	if (document.getElementById('canvasWidth').value === '') {
@@ -86,14 +94,16 @@ function setSettings() {
 
 function addControls () {
     gameVar.buttonStart.addEventListener('click', gameLevel1, false);
-    gameVar.buttonReStart1.addEventListener('click', gameLevel1, false);
+    gameVar.buttonPractice.addEventListener('click', gameLevel1, false);
+	gameVar.buttonReStart1.addEventListener('click', gameLevel1, false);
 	gameVar.buttonReStart2.addEventListener('click', gameLevel2, false);
     gameVar.buttonNewLevel.addEventListener('click', gameLevel2, false);
 }
 
 function removeControls() {
     gameVar.buttonStart.removeEventListener('click', gameLevel1, false);
-    gameVar.buttonReStart1.removeEventListener('click', gameLevel1, false);
+    gameVar.buttonPractice.removeEventListener('click', gameLevel1, false);
+	gameVar.buttonReStart1.removeEventListener('click', gameLevel1, false);
 	gameVar.buttonReStart2.removeEventListener('click', gameLevel2, false);
     gameVar.buttonNewLevel.removeEventListener('click', gameLevel2, false);
 }

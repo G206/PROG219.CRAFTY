@@ -19,7 +19,7 @@
     <div id="modalSplash" class="modalBox">
         <div id="splashStart" class="splash gold">
             <p class="red">
-                 <a href="#openSettings"><i class="fa fa-cog gold" aria-hidden="true"></i></a> Administrative Game Settings
+                 <a href="#openSettings"><i class="fa fa-cog gold" aria-hidden="true"></i> </a> Administrative Game Settings
             </p>
             <header>
         		<h1>Galaga Derby</h1>
@@ -29,36 +29,53 @@
 				<h3>Game Controls</h3>
 				<ol class="white">
 					<li>
-						ARROW keys are your primary controls.
+						<span class="gold">ARROW</span> keys are your primary controls.
 					</li>
 					<li>
-						LEFT and RIGHT keys control Rotation.
+						<span class="gold">LEFT</span> and <span class="gold">RIGHT</span> keys control Rotation.
 					</li>
 					<li>
-						UP key controls Forward thrust.
+						<span class="gold">UP</span> key controls Forward thrust.
 					</li>
 					<li>
-						CTRL or SHIFT controls Missile Fire - DISABLE your Sticky Key Function. Registry Modification Instructions are available at this <a href='disableStickyKeys.txt' target='_blank' class="gold">LINK</a>. S & Z Keys will also work as a backup fire key.
+						<span class="gold">CTRL</span> or '<span class="gold">,</span>' key controls Missile Fire.
 					</li>
                     <li>
                         <span class="red">RED</span> Galaga ship similar to the Golden Star Power Up can be captured and used as additional FirePower. Careful though, firing upon the ship will destroy it. Optional configuration of how Ship 2 is played is in the Administration Panel.
                     </li>
                     <li>
-						Warp Capability - Press SPACE Bar or DOWN Arrow Key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
+						Warp Capability - Press <span class="gold">M</span>, '<span class="gold">.</span>',</span>' or <span class="gold">DOWN</span> key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
 					</li>
 				</ol>
                 <h3 class="white">Notes</h3>
                 <ol class="gold">
                     <li>
-                        This game is best played on Full HD / 1080P resolution or higher. You can adjust the canvas display size and display scaling through the Administrative Game Settings. It is recommended that you set the resolution as high as possible that will allow no scroll bars to be present.
+                        This game is best played on Full HD / 1080P resolution or higher. You can adjust the canvas display size and display scaling through the Administrative Game Settings.
                     </li>
                 </ol>
             </div>
             <div class="white">
-                <h3>Click on the START button below to start the game</h3>
+                <h3>New 2 Player VS Mode Added. Battle your friends. Show whose the BOSS.</h3>
+                <form>
+                    <fieldset>
+                        <legend class="gold">
+                            1 or 2 Player Settings
+                        </legend>
+                        <div class="white checkboxList">
+                            <p>1 Player: </p>
+                            <input id="1P" type="radio" name="GameMode" checked=true />
+                            <p>2 Player VS. Mode (<span class="gold">A</span>, <span class="gold">W</span>, & <span class="gold">D</span> Key control Ship 2. <span class="gold">SPACE</span> & <span class="gold">C</span> Key Fire. <span class="gold">ALT</span> & <span class="gold">S</span> Key Warp) </p>
+                            <input id="2P" type="radio" name="GameMode" />
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="white">
+                <h3>Click on the START button below to start the PRACTICE Level 1.</h3>
             </div>
             <p class="widthShort center">
                 <input id="btnStart" type="button" value="START" class="btn btn-primary splashButton" />
+                <!-- <input id="btnStart2P" type="button" value="START 2P" class="btn btn-danger splashButton" /> -->
             </p>
             <!--	Footer Copyright-->
             <footer class="white">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
@@ -75,8 +92,8 @@
                 <h3 id="endOutput1" class="white"></h3>
             </div>
             <div>
-				<h3>Level 1 Final Score <span id="score1" class="white"></span></h3>
-				<h3>NEXT LEVEL</h3>
+				<h3>Practice Level 1 Final Score <span id="score1" class="white"></span></h3>
+				<h3>Game - LEVEL 2</h3>
 				<ol class="white">
 	                <li>
 	                    Enemy Ships Added - Kamakazi Style. Small Ships have 1 Hit Point. Large Ships Hit Points are determined by game settings.
@@ -87,7 +104,8 @@
 	            </ol>
 			</div>
             <p class="widthShort center">
-                <input id="btnNewLevel" type="button" value="Start Next Level"  class="btn btn-primary splashButton" />
+                <input id="btnPracticeLevel" type="button" value="RePlay Practice Level"  class="btn btn-primary splashButton" />
+                <input id="btnNewLevel" type="button" value="Start Game Level 2"  class="btn btn-danger splashButton" />
             </p>
 			<!--	Footer Copyright-->
             <footer class="white">Copyright Gabe &copy; 2017 - W3Dev@yahoo.com</footer>
@@ -139,14 +157,19 @@
                         <input id="canvasScale" type="number" placeholder="Enter #. 1 = 100%" value="0.6" />
                     </div>
                     <div class="checkboxList">
-                        <p>Player On-Center in Viewport: </p>
-                        <input id="viewportFollow" type="checkbox" />
-                        <p>Ship 2 180 DEG: </p>
-                        <input id="ship2_180" type="radio" name="ship2"/>
-                        <p>Ship 2 Reverse Turn: </p>
-                        <input id="ship2_reverse" type="radio" name="ship2" />
-                        <p>Ship 2 Independent (A & D Key control Ship 2): </p>
-                        <input id="ship2_independent" type="radio" name="ship2" />
+                        <h4>2P VS Mode disables all Viewport and Ship 2 Options Below</h4>
+                        <div>
+                            <p>Player On-Center in Viewport: </p>
+                            <input id="viewportFollow" type="checkbox" />
+                        </div>
+                        <div>
+                            <p>Ship 2 180 DEG: </p>
+                            <input id="ship2_180" type="radio" name="ship2"/>
+                            <p>Ship 2 Reverse Turn: </p>
+                            <input id="ship2_reverse" type="radio" name="ship2" />
+                            <p>Ship 2 Independent (A & D Key control Ship 2): </p>
+                            <input id="ship2_independent" type="radio" name="ship2" />
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset>
@@ -192,6 +215,9 @@
     </div>
     <div class="HPLine red">
         Hit Points: <span id="hitPoint">10</span>
+    </div>
+    <div class="HPLine2 white">
+        2P Hit Points: <span id="2PhitPoint">10</span>
     </div>
     <main id="game" class="gameMain">
 

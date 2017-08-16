@@ -401,10 +401,23 @@ Crafty.c('ShipCommon', {
 			decay: 0.94, // Variable to control rate of slow down when forward move is stopped. Higher value adds more perpetual motion. 1 value is no slow down.
 		})
 		// .color('blue')
-		// Bind keyboard down press event to call move functions - boolean true triggers function
-		.bind('KeyDown', function(e) {
+				.collision()
+		// Collision with Asteroid if HP is at 0 ends game
+		.onHit('asteroid', function() {
+			console.log("Ship Collision at Ship Level");
+
+		});
+	}
+});
+
+// Player One Ship
+Crafty.c('ShipOne', {
+	init: function() {
+		this.requires('ShipCommon');
+        // Bind keyboard down press event to call move functions - boolean true triggers function
+		this.bind('KeyDown', function(e) {
 			//on keydown, set the fire controls
-			if (e.keyCode === Crafty.keys.CTRL || e.keyCode === Crafty.keys.SHIFT || e.keyCode === Crafty.keys.Z || e.keyCode === Crafty.keys.S) {
+			if (e.keyCode === Crafty.keys.CTRL || e.keyCode === Crafty.keys.COMMA) {
 				// console.log('Missile Fire');
 				Crafty.audio.play('blast');
 
@@ -440,7 +453,7 @@ Crafty.c('ShipCommon', {
 						}
 					}
 				});
-			} else if (e.keyCode === Crafty.keys.SPACE || e.keyCode === Crafty.keys.DOWN_ARROW) {
+			} else if (e.keyCode === Crafty.keys.M || e.keyCode === Crafty.keys.PERIOD || e.keyCode === Crafty.keys.DOWN_ARROW) {
                 console.log('Warp Out');
 				Crafty.audio.play('warpout');
 				// Random X & Y - Greater Canvas Area for Warping
@@ -451,19 +464,72 @@ Crafty.c('ShipCommon', {
 				this.x = gameVar.playerX;
 				this.y = gameVar.playerY;
 			}
-		})
-		.collision()
-		// Collision with Asteroid if HP is at 0 ends game
-		.onHit('asteroid', function() {
-			console.log("Ship Collision at Ship Level");
-
 		});
 	}
 });
 
-Crafty.c('ShipStatic', {
+// Player One Ship
+Crafty.c('ShipTwo', {
 	init: function() {
 		this.requires('ShipCommon');
+        // Bind keyboard down press event to call move functions - boolean true triggers function
+		this.bind('KeyDown', function(e) {
+			//on keydown, set the fire controls
+			if (e.keyCode === Crafty.keys.SPACE || e.keyCode === Crafty.keys.C) {
+				// console.log('Missile Fire');
+				Crafty.audio.play('blast');
+
+				var currentShip = this;
+				//create a missile entity
+				Crafty.e('Actor, missile')
+				.attr({
+					x: this._x + (40 * gameVar.canvasScale),
+					y: this._y + (40 * gameVar.canvasScale),
+                    w: gameVar.missleW * gameVar.canvasScale,
+        			h: gameVar.missleH * gameVar.canvasScale,
+					rotation: this._rotation,
+					// Speed of the missile - BOTH X & Y needs to match
+					xspeed: 15 * Math.sin(this._rotation / 57.3),
+					yspeed: 15 * Math.cos(this._rotation / 57.3)
+				})
+				// .color('rgb(255, 0, 0)')
+				// Binds action to EnterFrame event function in Crafty.js
+				.bind('EnterFrame', function() {
+					this.x += this.xspeed;
+					this.y -= this.yspeed;
+
+					//destroy if it goes out of bounds
+					if (gameVar.canvasFollow) {
+						// This takes into account if the viewport Followme option is tured on. Viewport border changes with player movement. Missile will self destroy with constant border change.
+						if(this._x > (currentShip.x + (Crafty.viewport.width/2)) || this._x < (currentShip.x - (Crafty.viewport.width/2)) || this._y > (currentShip.y + (Crafty.viewport.height/2)) || this._y < (currentShip.y - (Crafty.viewport.height/2))) {
+							this.destroy();
+						}
+					} else {
+						// Boarder's are fixed.
+						if(this._x > Crafty.viewport.width || this._x < 0 || this._y > Crafty.viewport.height || this._y < 0) {
+							this.destroy();
+						}
+					}
+				});
+			} else if (e.keyCode === Crafty.keys.ALT || e.keyCode === Crafty.keys.S) {
+                console.log('Warp Out');
+				Crafty.audio.play('warpout');
+				// Random X & Y - Greater Canvas Area for Warping
+				gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.7) + 0.2);
+				gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.7) + 0.2);
+
+				// Warp player to new X & Y
+				this.x = gameVar.playerX;
+				this.y = gameVar.playerY;
+			}
+		});
+	}
+});
+
+// Ship with Standard orientation
+Crafty.c('ShipStatic', {
+	init: function() {
+		this.requires('ShipOne');
 		// Bind keyboard down press event to call move functions - boolean true triggers function
 		this.bind('KeyDown', function(e) {
 			//on keydown, set the move booleans
@@ -491,10 +557,41 @@ Crafty.c('ShipStatic', {
 	}
 });
 
+// Ship with Standard orientation
+Crafty.c('ShipStaticTwo', {
+	init: function() {
+		this.requires('ShipTwo');
+		// Bind keyboard down press event to call move functions - boolean true triggers function
+		this.bind('KeyDown', function(e) {
+			//on keydown, set the move booleans
+			if(e.keyCode === Crafty.keys.D) {
+				this.move.right = true;
+			} else if(e.keyCode === Crafty.keys.A) {
+				this.move.left = true;
+			}
+		})
+		// Bind keyboard up press event to stop move functions - boolean false triggers stop
+		.bind('KeyUp', function(e) {
+			//on key up, set the move booleans to false
+			if(e.keyCode === Crafty.keys.D) {
+				this.move.right = false;
+			} else if(e.keyCode === Crafty.keys.A) {
+				this.move.left = false;
+			}
+		})
+		// Binds action to EnterFrame event function in Crafty.js
+		// Combined with keyboard events, this is how the player is moved around the screen
+		.bind('EnterFrame', function() {
+			if(this.move.right) this.rotation += 5;
+			if(this.move.left) this.rotation -= 5;
+		});
+	}
+});
+
 // Ship with Reverse Turn
 Crafty.c('ShipStaticR', {
 	init: function() {
-		this.requires('ShipCommon');
+		this.requires('ShipOne');
 		// Bind keyboard down press event to call move functions - boolean true triggers function
 		this.bind('KeyDown', function(e) {
 			//on keydown, set the move booleans
@@ -522,10 +619,10 @@ Crafty.c('ShipStaticR', {
 	}
 });
 
-// Ship with Reverse Turn
+// Ship with Independent Turn
 Crafty.c('ShipStaticI', {
 	init: function() {
-		this.requires('ShipCommon');
+		this.requires('ShipOne');
 		// Bind keyboard down press event to call move functions - boolean true triggers function
 		this.bind('KeyDown', function(e) {
 			//on keydown, set the move booleans
@@ -553,6 +650,30 @@ Crafty.c('ShipStaticI', {
 	}
 });
 
+//Second Ship To Capture
+Crafty.c('Ship2', {
+    init: function() {
+        this.requires('Actor, Power, Collision');
+        this.collision()
+        // Collision with Missile destroys asteroid
+        .onHit('missile', function(e) {
+			console.log('Missile Hits PowerUp');
+            // Explosion Scene
+            Crafty.e('ExplosionMD').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
+			// Play Explosion Audio
+			Crafty.audio.play('explosion');
+			//destroy the missile
+            e[0].obj.destroy();
+			//destroy PowerUp - no benefit
+			this.destroy();
+        });
+    }
+});
+
+// Player One Component
 Crafty.c('PlayerShip', {
 	init: function() {
 		this.requires('ShipStatic');
@@ -611,25 +732,61 @@ Crafty.c('PlayerShip', {
 	}
 });
 
-//Second Ship To Capture
-Crafty.c('Ship2', {
-    init: function() {
-        this.requires('Actor, Power, Collision');
-        this.collision()
-        // Collision with Missile destroys asteroid
-        .onHit('missile', function(e) {
-			console.log('Missile Hits PowerUp');
-            // Explosion Scene
-            Crafty.e('ExplosionMD').attr({
-                x:this.x-this.w,
-                y:this.y-this.h
-            });
-			// Play Explosion Audio
-			Crafty.audio.play('explosion');
-			//destroy the missile
-            e[0].obj.destroy();
-			//destroy PowerUp - no benefit
-			this.destroy();
-        });
-    }
+// Player Two Component for VS Mode
+Crafty.c('PlayerTwo', {
+	init: function() {
+		this.requires('ShipStaticTwo');
+		// .color('blue')
+		// Bind keyboard down press event to call move functions - boolean true triggers function
+		this.bind('KeyDown', function(e) {
+			//on keydown, set the move booleans
+			if(e.keyCode === Crafty.keys.W) {
+				this.move.up = true;
+			}
+		})
+		// Bind keyboard up press event to stop move functions - boolean false triggers stop
+		.bind('KeyUp', function(e) {
+			//on key up, set the move booleans to false
+			if(e.keyCode === Crafty.keys.W) {
+				this.move.up = false;
+			}
+		})
+		// Binds action to EnterFrame event function in Crafty.js
+		// Combined with keyboard events, this is how the player is moved around the screen
+		.bind('EnterFrame', function() {
+
+			//acceleration and movement vector
+			var vx = Math.sin(this._rotation * Math.PI / 180) * 0.3,
+				vy = Math.cos(this._rotation * Math.PI / 180) * 0.3;
+
+			//if the move up is true, increment the y/xspeeds
+			if(this.move.up) {
+				this.yspeed -= vy;
+				this.xspeed += vx;
+			} else {
+				//if released, slow down the ship
+				this.xspeed *= this.decay;
+				this.yspeed *= this.decay;
+			}
+
+			//move the ship by the x and y speeds or movement vector
+			this.x += this.xspeed;
+			this.y += this.yspeed;
+			// Crafty.viewport.centerOn(this,200);
+
+			//if ship goes out of bounds, put him back
+			if(this._x > Crafty.viewport.width) {
+				this.x = -gameVar.shipSize;
+			}
+			if(this._x < -gameVar.shipSize) {
+				this.x =  Crafty.viewport.width;
+			}
+			if(this._y > Crafty.viewport.height) {
+				this.y = -gameVar.shipSize;
+			}
+			if(this._y < -gameVar.shipSize) {
+				this.y = Crafty.viewport.height;
+			}
+		});
+	}
 });
