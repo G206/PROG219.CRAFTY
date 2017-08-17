@@ -9,78 +9,21 @@ Crafty.scene('Game', function() {
 	// Variable to store initial player X & Y random position
 	gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 	gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
-	var player;
 
+	// Player Entity
+	var player = Crafty.e('PlayerShip, ship')
+		// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
+		.attr({
+			w: gameVar.shipSize * gameVar.canvasScale,
+			h: gameVar.shipSize * gameVar.canvasScale
+		})
+		.origin('center');
+	// Player Two Entity in VS Mode
 	if (gameVar.VSMode) {
-		// Player Entity
-		player = Crafty.e('PlayerShip, ship, Collision')
-			// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
-			.attr({
-				w: gameVar.shipSize * gameVar.canvasScale,
-				h: gameVar.shipSize * gameVar.canvasScale
-			})
-			.origin('center')
-			.collision()
-			.onHit('missile2', function(e) {
-				console.log('Hit from Player 2');
-
-				// Play Explosion Audio
-				Crafty.audio.play('explosion');
-				//destroy the missile
-				e[0].obj.destroy();
-	            // Explosion Scene
-	            Crafty.e('ExplosionBG').attr({
-	                x:this.x-this.w,
-	                y:this.y-this.h
-	            });
-				// Player one looses HP and if at 0, is destroyed
-				gameVar.hitPoint -= 1;
-				gameVar.hpDisplay.textContent = gameVar.hitPoint;
-				gameVar.score2 += 1;
-	            gameVar.scoreDisplay2.textContent = gameVar.score2;
-				if (gameVar.hitPoint <= 0) {
-					this.destroy();
-					return;
-				}
-			});
-
 		// Variable to reset X & Y random position
 		gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 		gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
-		// Player Two Entity in VS Mode
-		var playerTwo = Crafty.e('PlayerTwo, shipRed, Collision')
-			// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
-			.attr({
-				w: gameVar.shipSize * gameVar.canvasScale,
-				h: gameVar.shipSize * gameVar.canvasScale
-			})
-			.origin('center')
-			.collision()
-			.onHit('missile', function(e) {
-				console.log('Hit from Player 1');
-
-				// Play Explosion Audio
-				Crafty.audio.play('explosion');
-				//destroy the missile
-				e[0].obj.destroy();
-	            // Explosion Scene
-	            Crafty.e('ExplosionBG').attr({
-	                x:this.x-this.w,
-	                y:this.y-this.h
-	            });
-				// Player one looses HP and if at 0, is destroyed
-				gameVar.hitPoint2 -= 1;
-				gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
-				gameVar.score += 1;
-				gameVar.scoreDisplay.textContent = gameVar.score;
-				if (gameVar.hitPoint2 <= 0) {
-					this.destroy();
-					return;
-				}
-			});
-	} else {
-		// Player Entity
-		player = Crafty.e('PlayerShip, ship')
+		var playerTwo = Crafty.e('PlayerTwo, shipRed')
 			// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
 			.attr({
 				w: gameVar.shipSize * gameVar.canvasScale,
@@ -92,7 +35,7 @@ Crafty.scene('Game', function() {
     Crafty.c('asteroid', {
         init: function() {
             this.requires('Actor, Rock, Collision');
-			this.collision()
+            this.collision()
             // Collision with ship damages ship and destroys asteroid
             .onHit('ship', function(e) {
 				console.log('Ship Collision at Asteroid Level');
@@ -141,67 +84,7 @@ Crafty.scene('Game', function() {
 					this.destroy();
 					gameVar.asteroidCount --;
 					// End Level if both Asteroid and Enemy count is at 0
-	                if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
-	                    exitCurrentLevel();
-	                }
-                    return;
-                }
-                var oldxspeed = this.xspeed;
-                this.xspeed = -this.yspeed;
-                this.yspeed = oldxspeed;
-
-                gameVar.asteroidCount ++;
-                //split into two asteroids by creating another asteroid
-                Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
-            })
-			.onHit('shipRed', function(e) {
-				console.log('Ship2 Collision at Asteroid Level');
-				// Explosion scene
-				Crafty.e('ExplosionSM').attr({
-					x:this.x-this.w,
-					y:this.y-this.h
-				});
-				// Play Collision Audio
-				Crafty.audio.play('collision');
-				// if destroyed by ship collision increment the score, decrease HP
-				gameVar.score2 += 1;
-				gameVar.scoreDisplay2.textContent = gameVar.score2;
-				gameVar.hitPoint2 -= 1;
-				gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
-
-				// End Game if HP is at 0
-				if (gameVar.hitPoin2t <= 0) {
-					// Explosion Scene
-					Crafty.e('ExplosionBG').attr({
-						x:this.x-this.w,
-						y:this.y-this.h
-					});
-					playerTwo.destroy();
-					exitCurrentLevel();
-				}
-
-                var size;
-                //decide what size to make the asteroid
-                if(this.has('rock_L')) {
-                    this.removeComponent('rock_L').addComponent('rock_M');
-					this.attr({
-						w: gameVar.rockM * gameVar.canvasScale,
-						h: gameVar.rockM * gameVar.canvasScale
-					});
-                    size = 'rock_M';
-                } else if(this.has('rock_M')) {
-                    this.removeComponent('rock_M').addComponent('rock_S');
-					this.attr({
-						w: gameVar.rockS * gameVar.canvasScale,
-						h: gameVar.rockS * gameVar.canvasScale
-					});
-                    size = 'rock_S';
-                } else if(this.has('rock_S')) {
-					//if the lowest size, delete self and decrease total Asteroid Count
-					this.destroy();
-					gameVar.asteroidCount --;
-					// End Level if both Asteroid and Enemy count is at 0
-	                if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
+	                if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
 	                    exitCurrentLevel();
 	                }
                     return;
@@ -243,7 +126,7 @@ Crafty.scene('Game', function() {
         }
     }
 
-	// Function to add Second Player Ship - One Player Mode ONLY
+	// Function to add Second Player Ship
 	function initShip2() {
 		Crafty.e('shipRed, Ship2')
 		.attr({
@@ -445,7 +328,7 @@ Crafty.scene('Game', function() {
 						// Decrease total enemy count
 						gameVar.enemyCount --;
 						// End Level if both Asteroid and Enemy count is at 0
-						if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
+						if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
 							exitCurrentLevel();
 						}
 					}

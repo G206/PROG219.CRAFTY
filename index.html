@@ -44,7 +44,7 @@
                         <span class="red">RED</span> Galaga ship similar to the Golden Star Power Up can be captured and used as additional FirePower. Careful though, firing upon the ship will destroy it. Optional configuration of how Ship 2 is played is in the Administration Panel.
                     </li>
                     <li>
-						Warp Capability - Press <span class="gold">M</span>, '<span class="gold">.</span>',</span>' or <span class="gold">DOWN</span> key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
+						Warp Capability - Press <span class="gold">M</span>, '<span class="gold">.</span>', or <span class="gold">DOWN</span> key - Randomly disappear and reappear on another part of the screen. But watch out, you could warp into another object causing damage. Use at your own Risk.
 					</li>
 				</ol>
                 <h3 class="white">Notes</h3>
@@ -61,11 +61,12 @@
                         <legend class="gold">
                             1 or 2 Player Settings
                         </legend>
-                        <div class="white checkboxList">
-                            <p>1 Player: </p>
-                            <input id="1P" type="radio" name="GameMode" checked=true />
-                            <p>2 Player VS. Mode (<span class="gold">A</span>, <span class="gold">W</span>, & <span class="gold">D</span> Key control Ship 2. <span class="gold">SPACE</span> & <span class="gold">C</span> Key Fire. <span class="gold">ALT</span> & <span class="gold">S</span> Key Warp) </p>
+                        <div class="white vsMode checkboxList">
+                            <input id="1P" type="radio" name="GameMode" checked />
+                            <p>1 Player Mode </p><br>
                             <input id="2P" type="radio" name="GameMode" />
+                            <p>2 Player VS. Mode (<span class="gold">A</span>, <span class="gold">W</span>, & <span class="gold">D</span> Key control Ship 2. <span class="gold">SPACE</span> & <span class="gold">C</span> Key Fire. <span class="gold">ALT</span> & <span class="gold">S</span> Key Warp) </p>
+
                         </div>
                     </fieldset>
                 </form>
@@ -211,13 +212,16 @@
         </div>
     </div>
     <div class="scoreLine gold">
-        Score: <span id="score">0</span>
+        Score: <span id="scoreL">0</span>
     </div>
     <div class="HPLine red">
-        Hit Points: <span id="hitPoint">10</span>
+        Hit Points: <span id="hitPoint">0</span>
     </div>
-    <div class="HPLine2 white">
-        2P Hit Points: <span id="2PhitPoint">10</span>
+        <div class="scoreLine2 white">
+        2P Score: <span id="scoreL2">0</span>
+    </div>
+    <div class="HPLine2 blue">
+        2P Hit Points: <span id="hitPoint2">0</span>
     </div>
     <main id="game" class="gameMain">
 

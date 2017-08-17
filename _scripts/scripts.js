@@ -6,8 +6,10 @@ var gameVar = {
 	canvasW: 0,
 	canvasH: 0,
 	score: 0,
+	score2: 0,
 	initalHP: 10,
 	hitPoint: 0,
+	hitPoint2: 0,
 	//keep a count of asteroids
 	asteroidCount: 0,
 	enemyCount: 0,
@@ -32,8 +34,8 @@ var gameVar = {
 	ship2_180: false,
 	ship2_reverse: false,
 	ship2_independent: false,
-	onePlayer: document.getElementById('1P').checked,
-	twoPlayer: document.getElementById('2P').checked,
+	onePlayer: true,
+	twoPlayer: false,
 	VSMode: false
 };
 
@@ -51,17 +53,26 @@ gameVar.endOutput1 = document.getElementById('endOutput1');
 gameVar.endOutput2 = document.getElementById('endOutput2');
 gameVar.scoreOutput1 = document.getElementById('score1');
 gameVar.scoreOutput2 = document.getElementById('score2');
-gameVar.scoreDisplay = document.getElementById('score');
+gameVar.scoreDisplay = document.getElementById('scoreL');
+gameVar.scoreDisplay2 = document.getElementById('scoreL2');
 gameVar.hpDisplay = document.getElementById('hitPoint');
-
-gameVar.hitPoint = gameVar.initalHP;
-gameVar.hpDisplay.textContent = gameVar.hitPoint;
+gameVar.hpDisplay2 = document.getElementById('hitPoint2');
 
 gameVar.canvasW = (Math.max(window.innerWidth || 0) * 0.975);
 gameVar.canvasH =  (Math.max(window.innerHeight || 0) * 0.96);
 
-if (gameVar.twoPlayer) {
-	gameVar.VSMode = true;
+
+function setMode() {
+	gameVar.onePlayer = document.getElementById('1P').checked;
+	gameVar.twoPlayer = document.getElementById('2P').checked;
+	if (gameVar.twoPlayer) {
+		gameVar.VSMode = true;
+		gameVar.initalHP = 30;
+	}
+	gameVar.hitPoint = gameVar.initalHP;
+	gameVar.hitPoint2 = gameVar.initalHP;
+	gameVar.hpDisplay.textContent = gameVar.hitPoint;
+	gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
 }
 
 function setSettings() {
@@ -77,10 +88,14 @@ function setSettings() {
 	}
 
 	gameVar.canvasScale = parseFloat(document.getElementById('canvasScale').value);
-	gameVar.canvasFollow = document.getElementById('viewportFollow').checked;
-	gameVar.ship2_180 = document.getElementById('ship2_180').checked;
-	gameVar.ship2_reverse = document.getElementById('ship2_reverse').checked;
-	gameVar.ship2_independent = document.getElementById('ship2_independent').checked;
+	// Verify if VS Mode before changing settings
+	setMode();
+	if (!gameVar.VSMode) {
+		gameVar.canvasFollow = document.getElementById('viewportFollow').checked;
+		gameVar.ship2_180 = document.getElementById('ship2_180').checked;
+		gameVar.ship2_reverse = document.getElementById('ship2_reverse').checked;
+		gameVar.ship2_independent = document.getElementById('ship2_independent').checked;
+	}
 
 	gameVar.maxAsteroids = parseInt(document.getElementById('maxAsteroids').value);
 	gameVar.maxAsteroidSpeed = parseInt(document.getElementById('maxAsteroidSpeed').value);
@@ -125,6 +140,7 @@ function resetGame() {
 function gameLevel1() {
 	removeControls();
 	resetGame();
+	setMode();
 	gameVar.level = 1;
 	Crafty.init(gameVar.canvasW, gameVar.canvasH, gameVar.gameCanvas);
 	// Start Level 1 game scene

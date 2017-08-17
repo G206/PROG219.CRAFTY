@@ -106,6 +106,8 @@ div.modalBox {
 	-moz-transition: opacity 400ms ease-in;
 	transition: opacity 400ms ease-in;
 	pointer-events: none;
+	padding-bottom: 20px;
+	min-height:
 }
 
 #openSettings:target {
@@ -148,7 +150,9 @@ form input[type="checkbox"] {
 form input[type="radio"] {
 	width: 48px;
 }
-
+div .vsMode {
+	font-size: 1.2em;
+}
 .black {
 	color: black;
 }
@@ -164,6 +168,10 @@ form input[type="radio"] {
 	color: gold;
 }
 
+.blue {
+	color: steelblue;
+}
+
 .center {
 	margin: 0 auto;
 }
@@ -172,7 +180,7 @@ form input[type="radio"] {
 	width: 90%;
 }
 
-.scoreLine, .HPLine {
+.scoreLine, .HPLine, .scoreLine2, .HPLine2 {
 	position: fixed;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -185,7 +193,11 @@ form input[type="radio"] {
 	top: 54px;
 	left: 20px;
 }
-.HPLine2 {
+.scoreLine2 {
 	top: 84px;
+	left: 20px;
+}
+.HPLine2 {
+	top: 114px;
 	left: 20px;
 }

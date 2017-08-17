@@ -26,6 +26,11 @@ var assetsObj = {
             'tileh': gameVar.missleH,
             'map': {'missile': [0,0] }
         },
+        'missile2.png': {
+            'tile': gameVar.missleW,
+            'tileh': gameVar.missleH,
+            'map': {'missile2': [0,0] }
+        },
         'rock_L.png': {
             'tile': gameVar.rockL,
             'tileh': gameVar.rockL,
@@ -229,7 +234,49 @@ Crafty.c('Rock', {
                 this.destroy();
 				gameVar.asteroidCount --;
 				// End Level if both Asteroid and Enemy count is at 0
-				if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
+				if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
+					exitCurrentLevel();
+				}
+				return;
+			}
+
+			var oldxspeed = this.xspeed;
+			this.xspeed = -this.yspeed;
+			this.yspeed = oldxspeed;
+
+			gameVar.asteroidCount++;
+			//split into two asteroids by creating another asteroid
+			Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
+		})
+        .onHit('missile2', function(e) {
+			console.log('Missile2 Hits Aseroid');
+            // Explosion scene
+            Crafty.e('ExplosionSM').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
+			// if hit by a missile increment the score
+			gameVar.score2 += 1;
+			gameVar.scoreDisplay2.textContent = gameVar.score2;
+			// Play Explosion Audio
+			Crafty.audio.play('explosion');
+			//destroy the missile
+			e[0].obj.destroy();
+
+			var size;
+			//decide what size to make the asteroid
+			if(this.has('rock_L')) {
+				this.removeComponent('rock_L').addComponent('rock_M');
+				size = 'rock_M';
+			} else if(this.has('rock_M')) {
+				this.removeComponent('rock_M').addComponent('rock_S');
+				size = 'rock_S';
+			} else if(this.has('rock_S')) {
+                //if the lowest size, delete self and decrease total Asteroid Count
+                this.destroy();
+				gameVar.asteroidCount --;
+				// End Level if both Asteroid and Enemy count is at 0
+				if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
 					exitCurrentLevel();
 				}
 				return;
@@ -275,15 +322,45 @@ Crafty.c('Enemy', {
             });
 			// Enemy looses HP and if at 0, is destroyed
 			this.hp -= 1;
+            // if destroyed by a missile increment the score
+            gameVar.score += 1;
+            gameVar.scoreDisplay.textContent = gameVar.score;
 			if (this.hp <= 0) {
 				this.destroy();
-				// if destroyed by a missile increment the score
-				gameVar.score += 1;
-				gameVar.scoreDisplay.textContent = gameVar.score;
+
 				// Decrease total enemy count
 				gameVar.enemyCount --;
 				// End Level if both Asteroid and Enemy count is at 0
-				if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0) {
+				if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
+					exitCurrentLevel();
+				}
+				return;
+			}
+		})
+        .onHit('missile2', function(e) {
+			console.log('Missile2 Hits Enemy');
+
+			// Play Explosion Audio
+			Crafty.audio.play('explosion');
+			//destroy the missile
+			e[0].obj.destroy();
+            // Explosion Scene
+            Crafty.e('ExplosionBG').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
+			// Enemy looses HP and if at 0, is destroyed
+			this.hp -= 1;
+            // if destroyed by a missile increment the score
+            gameVar.score2 += 1;
+            gameVar.scoreDisplay2.textContent = gameVar.score;
+			if (this.hp <= 0) {
+				this.destroy();
+
+				// Decrease total enemy count
+				gameVar.enemyCount --;
+				// End Level if both Asteroid and Enemy count is at 0
+				if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
 					exitCurrentLevel();
 				}
 				return;
@@ -370,11 +447,25 @@ Crafty.c('PowerUp', {
 			//destroy PowerUp - no benefit
 			this.destroy();
         })
+        .onHit('missile2', function(e) {
+			console.log('Missile2 Hits PowerUp');
+            // Explosion Scene
+            Crafty.e('ExplosionMD').attr({
+                x:this.x-this.w,
+                y:this.y-this.h
+            });
+			// Play Explosion Audio
+			Crafty.audio.play('explosion');
+			//destroy the missile
+            e[0].obj.destroy();
+			//destroy PowerUp - no benefit
+			this.destroy();
+        })
         // Collision with ship Powers Up HP
         .onHit('ship', function(e) {
 			console.log('Ship PU PowerUp');
-            // if destroyed by ship collision increment the score, decrease HP
-            gameVar.score += 1;
+            // if destroyed by ship collision increment the score, increase HP
+            gameVar.score += 5;
             gameVar.scoreDisplay.textContent = gameVar.score;
             gameVar.hitPoint += 5;
             gameVar.hpDisplay.textContent = gameVar.hitPoint;
@@ -382,6 +473,18 @@ Crafty.c('PowerUp', {
 			Crafty.audio.play('warpout');
 			this.destroy();
 
+        })
+        .onHit('shipRed', function(e) {
+            if (gameVar.VSMode) {
+                console.log('ShipRed PU PowerUp');
+                gameVar.score2 += 5;
+                gameVar.scoreDisplay2.textContent = gameVar.score2;
+                gameVar.hitPoint2 += 5;
+                gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
+    			// Play Collision Audio
+    			Crafty.audio.play('warpout');
+    			this.destroy();
+            }
         });
     }
 });
@@ -401,11 +504,10 @@ Crafty.c('ShipCommon', {
 			decay: 0.94, // Variable to control rate of slow down when forward move is stopped. Higher value adds more perpetual motion. 1 value is no slow down.
 		})
 		// .color('blue')
-				.collision()
+        .collision()
 		// Collision with Asteroid if HP is at 0 ends game
-		.onHit('asteroid', function() {
-			console.log("Ship Collision at Ship Level");
-
+		.onHit('missile', function(e) {
+            console.log('Missile Hit from Other Player');
 		});
 	}
 });
@@ -468,7 +570,7 @@ Crafty.c('ShipOne', {
 	}
 });
 
-// Player One Ship
+// Player Two Ship
 Crafty.c('ShipTwo', {
 	init: function() {
 		this.requires('ShipCommon');
@@ -476,12 +578,12 @@ Crafty.c('ShipTwo', {
 		this.bind('KeyDown', function(e) {
 			//on keydown, set the fire controls
 			if (e.keyCode === Crafty.keys.SPACE || e.keyCode === Crafty.keys.C) {
-				// console.log('Missile Fire');
+				// console.log('Missile2 Fire');
 				Crafty.audio.play('blast');
 
 				var currentShip = this;
 				//create a missile entity
-				Crafty.e('Actor, missile')
+				Crafty.e('Actor, missile2')
 				.attr({
 					x: this._x + (40 * gameVar.canvasScale),
 					y: this._y + (40 * gameVar.canvasScale),
