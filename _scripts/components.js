@@ -294,7 +294,7 @@ Crafty.c('Rock', {
 });
 
 
-// Enemy Large Component
+// Base Enemy Component
 Crafty.c('Enemy', {
 	init: function() {
 		this.requires('Actor, Collision');

@@ -51,8 +51,10 @@ gameVar.screenLevel = document.getElementById('splashLevel');
 gameVar.splashEnd = document.getElementById('splashEnd');
 gameVar.endOutput1 = document.getElementById('endOutput1');
 gameVar.endOutput2 = document.getElementById('endOutput2');
-gameVar.scoreOutput1 = document.getElementById('score1');
-gameVar.scoreOutput2 = document.getElementById('score2');
+gameVar.scoreOutputL1_1 = document.getElementById('scoreL1_1');
+gameVar.scoreOutputL2_1 = document.getElementById('scoreL2_1');
+gameVar.scoreOutputL1_2 = document.getElementById('scoreL1_2');
+gameVar.scoreOutputL2_2 = document.getElementById('scoreL2_2');
 gameVar.scoreDisplay = document.getElementById('scoreL');
 gameVar.scoreDisplay2 = document.getElementById('scoreL2');
 gameVar.hpDisplay = document.getElementById('hitPoint');
@@ -160,7 +162,8 @@ function gameLevel2() {
 // Function to exit game screen
 function exitLevel() {
 	// Set score for display for Level 1
-	gameVar.scoreOutput1.textContent = gameVar.score;
+	gameVar.scoreOutputL1_1.textContent = gameVar.score;
+	gameVar.scoreOutputL1_2.textContent = gameVar.score2;
 	// Set message for display if WON or lOST
 	if (gameVar.hitPoint <=0) {
 		gameVar.endOutput1.textContent = "You LOST. You need more practice";
@@ -179,7 +182,8 @@ function exitLevel() {
 // Function to exit game screen
 function exitGame() {
 	// Set score for display for Level 2
-	gameVar.scoreOutput2.textContent = gameVar.score;
+	gameVar.scoreOutputL2_1.textContent = gameVar.score;
+	gameVar.scoreOutputL2_2.textContent = gameVar.score2;
 	// Set message for display if WON or lOST
 	if (gameVar.hitPoint <=0) {
 		gameVar.endOutput2.textContent = "You LOST. You need more practice";
