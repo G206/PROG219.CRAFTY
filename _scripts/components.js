@@ -239,7 +239,6 @@ Crafty.c('Rock', {
 				}
 				return;
 			}
-
 			var oldxspeed = this.xspeed;
 			this.xspeed = -this.yspeed;
 			this.yspeed = oldxspeed;
@@ -281,7 +280,6 @@ Crafty.c('Rock', {
 				}
 				return;
 			}
-
 			var oldxspeed = this.xspeed;
 			this.xspeed = -this.yspeed;
 			this.yspeed = oldxspeed;
@@ -519,7 +517,7 @@ Crafty.c('ShipOne', {
         // Bind keyboard down press event to call move functions - boolean true triggers function
 		this.bind('KeyDown', function(e) {
 			//on keydown, set the fire controls
-			if (e.keyCode === Crafty.keys.CTRL || e.keyCode === Crafty.keys.COMMA) {
+			if (e.keyCode === Crafty.keys.NUMPAD_0 || e.keyCode === Crafty.keys.NUMPAD_1 || e.keyCode === Crafty.keys.NUMPAD_3 || e.keyCode === Crafty.keys.PERIOD || e.keyCode === Crafty.keys.M) {
 				// console.log('Missile Fire');
 				Crafty.audio.play('blast');
 
@@ -555,7 +553,7 @@ Crafty.c('ShipOne', {
 						}
 					}
 				});
-			} else if (e.keyCode === Crafty.keys.M || e.keyCode === Crafty.keys.PERIOD || e.keyCode === Crafty.keys.DOWN_ARROW) {
+			} else if (e.keyCode === Crafty.keys.COMMA || e.keyCode === Crafty.keys.DOWN_ARROW || e.keyCode === Crafty.keys.NUMPAD_2) {
                 console.log('Warp Out');
 				Crafty.audio.play('warpout');
 				// Random X & Y - Greater Canvas Area for Warping
@@ -577,7 +575,7 @@ Crafty.c('ShipTwo', {
         // Bind keyboard down press event to call move functions - boolean true triggers function
 		this.bind('KeyDown', function(e) {
 			//on keydown, set the fire controls
-			if (e.keyCode === Crafty.keys.SPACE || e.keyCode === Crafty.keys.C) {
+			if (e.keyCode === Crafty.keys.B || e.keyCode === Crafty.keys.C) {
 				// console.log('Missile2 Fire');
 				Crafty.audio.play('blast');
 
@@ -613,7 +611,7 @@ Crafty.c('ShipTwo', {
 						}
 					}
 				});
-			} else if (e.keyCode === Crafty.keys.ALT || e.keyCode === Crafty.keys.S) {
+			} else if (e.keyCode === Crafty.keys.V || e.keyCode === Crafty.keys.S) {
                 console.log('Warp Out');
 				Crafty.audio.play('warpout');
 				// Random X & Y - Greater Canvas Area for Warping

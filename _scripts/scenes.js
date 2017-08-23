@@ -155,64 +155,66 @@ Crafty.scene('Game', function() {
                 Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
             })
 			.onHit('shipRed', function(e) {
-				console.log('Ship2 Collision at Asteroid Level');
-				// Explosion scene
-				Crafty.e('ExplosionSM').attr({
-					x:this.x-this.w,
-					y:this.y-this.h
-				});
-				// Play Collision Audio
-				Crafty.audio.play('collision');
-				// if destroyed by ship collision increment the score, decrease HP
-				gameVar.score2 += 1;
-				gameVar.scoreDisplay2.textContent = gameVar.score2;
-				gameVar.hitPoint2 -= 1;
-				gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
-
-				// End Game if HP is at 0
-				if (gameVar.hitPoin2t <= 0) {
-					// Explosion Scene
-					Crafty.e('ExplosionBG').attr({
+				if (gameVar.VSMode) {
+					console.log('Ship2 Collision at Asteroid Level');
+					// Explosion scene
+					Crafty.e('ExplosionSM').attr({
 						x:this.x-this.w,
 						y:this.y-this.h
 					});
-					player2.destroy();
-					exitCurrentLevel();
-				}
+					// Play Collision Audio
+					Crafty.audio.play('collision');
+					// if destroyed by ship collision increment the score, decrease HP
+					gameVar.score2 += 1;
+					gameVar.scoreDisplay2.textContent = gameVar.score2;
+					gameVar.hitPoint2 -= 1;
+					gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
 
-                var size;
-                //decide what size to make the asteroid
-                if(this.has('rock_L')) {
-                    this.removeComponent('rock_L').addComponent('rock_M');
-					this.attr({
-						w: gameVar.rockM * gameVar.canvasScale,
-						h: gameVar.rockM * gameVar.canvasScale
-					});
-                    size = 'rock_M';
-                } else if(this.has('rock_M')) {
-                    this.removeComponent('rock_M').addComponent('rock_S');
-					this.attr({
-						w: gameVar.rockS * gameVar.canvasScale,
-						h: gameVar.rockS * gameVar.canvasScale
-					});
-                    size = 'rock_S';
-                } else if(this.has('rock_S')) {
-					//if the lowest size, delete self and decrease total Asteroid Count
-					this.destroy();
-					gameVar.asteroidCount --;
-					// End Level if both Asteroid and Enemy count is at 0
-	                if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
-	                    exitCurrentLevel();
+					// End Game if HP is at 0
+					if (gameVar.hitPoin2t <= 0) {
+						// Explosion Scene
+						Crafty.e('ExplosionBG').attr({
+							x:this.x-this.w,
+							y:this.y-this.h
+						});
+						player2.destroy();
+						exitCurrentLevel();
+					}
+
+	                var size;
+	                //decide what size to make the asteroid
+	                if(this.has('rock_L')) {
+	                    this.removeComponent('rock_L').addComponent('rock_M');
+						this.attr({
+							w: gameVar.rockM * gameVar.canvasScale,
+							h: gameVar.rockM * gameVar.canvasScale
+						});
+	                    size = 'rock_M';
+	                } else if(this.has('rock_M')) {
+	                    this.removeComponent('rock_M').addComponent('rock_S');
+						this.attr({
+							w: gameVar.rockS * gameVar.canvasScale,
+							h: gameVar.rockS * gameVar.canvasScale
+						});
+	                    size = 'rock_S';
+	                } else if(this.has('rock_S')) {
+						//if the lowest size, delete self and decrease total Asteroid Count
+						this.destroy();
+						gameVar.asteroidCount --;
+						// End Level if both Asteroid and Enemy count is at 0
+		                if (gameVar.asteroidCount <= 0 && gameVar.enemyCount <= 0 && !gameVar.VSMode) {
+		                    exitCurrentLevel();
+		                }
+	                    return;
 	                }
-                    return;
-                }
-                var oldxspeed = this.xspeed;
-                this.xspeed = -this.yspeed;
-                this.yspeed = oldxspeed;
+	                var oldxspeed = this.xspeed;
+	                this.xspeed = -this.yspeed;
+	                this.yspeed = oldxspeed;
 
-                gameVar.asteroidCount ++;
-                //split into two asteroids by creating another asteroid
-                Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
+	                gameVar.asteroidCount ++;
+	                //split into two asteroids by creating another asteroid
+	                Crafty.e('Actor, '+size+', Collision, asteroid').attr({x: this._x, y: this._y});
+				}
             });
         }
     });

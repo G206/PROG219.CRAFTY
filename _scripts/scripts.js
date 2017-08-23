@@ -36,7 +36,9 @@ var gameVar = {
 	ship2_independent: false,
 	onePlayer: true,
 	twoPlayer: false,
-	VSMode: false
+	VSMode: false,
+	VSModeHP: 25,
+	firstTime: true
 };
 
 gameVar.gameCanvas = document.getElementById('game');
@@ -69,7 +71,7 @@ function setMode() {
 	gameVar.twoPlayer = document.getElementById('2P').checked;
 	if (gameVar.twoPlayer) {
 		gameVar.VSMode = true;
-		gameVar.initalHP = 30;
+		gameVar.initalHP = gameVar.VSModeHP;
 	}
 	gameVar.hitPoint = gameVar.initalHP;
 	gameVar.hitPoint2 = gameVar.initalHP;
@@ -84,14 +86,16 @@ function setSettings() {
 		gameVar.canvasW = parseInt(document.getElementById('canvasWidth').value);
 	}
 	if (document.getElementById('canvasHeight').value === '') {
-		gameVar.canvasH = (Math.max(window.innerHeight || 0) * 0.97);
+		gameVar.canvasH = (Math.max(window.innerHeight || 0) * 0.95);
 	} else {
 		gameVar.canvasH = parseInt(document.getElementById('canvasHeight').value);
 	}
 
 	gameVar.canvasScale = parseFloat(document.getElementById('canvasScale').value);
 	// Verify if VS Mode before changing settings
-	setMode();
+	if (gameVar.firstTime) {
+		setMode();
+	}
 	if (!gameVar.VSMode) {
 		gameVar.canvasFollow = document.getElementById('viewportFollow').checked;
 		gameVar.ship2_180 = document.getElementById('ship2_180').checked;
@@ -131,18 +135,28 @@ function resetGame() {
 	gameVar.gameCanvas.style.pointerEvents = 'auto';
 
 	// Reset all game stats
+	if (gameVar.VSMode) {
+		gameVar.score2 = 0;
+		gameVar.scoreDisplay2.textContent = gameVar.score2;
+		gameVar.hitPoint2 = gameVar.initalHP;
+		gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
+	}
 	gameVar.score = 0;
+	gameVar.scoreDisplay.textContent = gameVar.score;
+	gameVar.hitPoint = gameVar.initalHP;
+	gameVar.hpDisplay.textContent = gameVar.hitPoint;
 	gameVar.asteroidCount = 0;
 	gameVar.enemyCount = 0;
-	gameVar.hitPoint = gameVar.initalHP;
-	console.log("Canvas W: " + gameVar.canvasW );
-	console.log("Canvas H: " + gameVar.canvasH );
 }
 // Function to start New Game and Reinitialize all parameters
 function gameLevel1() {
+	if (gameVar.firstTime) {
+		gameVar.firstTime = false;
+		setMode();
+	}
+
 	removeControls();
 	resetGame();
-	setMode();
 	gameVar.level = 1;
 	Crafty.init(gameVar.canvasW, gameVar.canvasH, gameVar.gameCanvas);
 	// Start Level 1 game scene
@@ -165,11 +179,34 @@ function exitLevel() {
 	gameVar.scoreOutputL1_1.textContent = gameVar.score;
 	gameVar.scoreOutputL1_2.textContent = gameVar.score2;
 	// Set message for display if WON or lOST
-	if (gameVar.hitPoint <=0) {
-		gameVar.endOutput1.textContent = "You LOST. You need more practice";
+	if (gameVar.VSMode) {
+		if (gameVar.score > gameVar.score2) {
+			if (gameVar.hitPoint > gameVar.hitPoint2) {
+				gameVar.endOutput1.textContent = "Player 1 WON!";
+			} else {
+				gameVar.endOutput1.textContent = "Player 2 WON since Player 1 DIED!";
+			}
+		} else if (gameVar.score < gameVar.score2) {
+			if (gameVar.hitPoint < gameVar.hitPoint2) {
+				gameVar.endOutput1.textContent = "Player 2 WON!";
+			} else {
+				gameVar.endOutput1.textContent = "Player 1 WON since Player 2 DIED!";
+			}
+		} else {
+			if (gameVar.hitPoint > gameVar.hitPoint2) {
+				gameVar.endOutput1.textContent = "Player 1 WON since Player 2 DIED!";
+			} else {
+				gameVar.endOutput1.textContent = "Player 2 WON since Player 1 DIED!";
+			}
+		}
 	} else {
-		gameVar.endOutput1.textContent = "You WON. Try playing on a harder setting.";
+		if (gameVar.hitPoint <=0) {
+			gameVar.endOutput1.textContent = "You LOST. You need more practice";
+		} else {
+			gameVar.endOutput1.textContent = "You WON. Try playing on a harder setting.";
+		}
 	}
+
 	gameVar.splashStart.style.display = 'none';
 	gameVar.screenLevel.style.display = 'block';
 	gameVar.splashEnd.style.display = 'none';
@@ -184,11 +221,34 @@ function exitGame() {
 	// Set score for display for Level 2
 	gameVar.scoreOutputL2_1.textContent = gameVar.score;
 	gameVar.scoreOutputL2_2.textContent = gameVar.score2;
+
 	// Set message for display if WON or lOST
-	if (gameVar.hitPoint <=0) {
-		gameVar.endOutput2.textContent = "You LOST. You need more practice";
+	if (gameVar.VSMode) {
+		if (gameVar.score > gameVar.score2) {
+			if (gameVar.hitPoint > gameVar.hitPoint2) {
+				gameVar.endOutput2.textContent = "Player 1 WON!";
+			} else {
+				gameVar.endOutput2.textContent = "Player 2 WON since Player 1 DIED!";
+			}
+		} else if (gameVar.score < gameVar.score2) {
+			if (gameVar.hitPoint < gameVar.hitPoint2) {
+				gameVar.endOutput2.textContent = "Player 2 WON!";
+			} else {
+				gameVar.endOutput2.textContent = "Player 1 WON since Player 2 DIED!";
+			}
+		} else {
+			if (gameVar.hitPoint > gameVar.hitPoint2) {
+				gameVar.endOutput2.textContent = "Player 1 WON since Player 2 DIED!";
+			} else {
+				gameVar.endOutput2.textContent = "Player 2 WON since Player 1 DIED!";
+			}
+		}
 	} else {
-		gameVar.endOutput2.textContent = "You WON. Try playing on a harder setting.";
+		if (gameVar.hitPoint <=0) {
+			gameVar.endOutput2.textContent = "You LOST. You need more practice";
+		} else {
+			gameVar.endOutput2.textContent = "You WON. Try playing on a harder setting.";
+		}
 	}
 	gameVar.splashStart.style.display = 'none';
 	gameVar.screenLevel.style.display = 'none';
