@@ -126,7 +126,7 @@ form fieldset legend {
 
 form fieldset div p {
 	display: inline-block;
-	width: 264px;
+	width: 320px;
 }
 
 form fieldset input {
@@ -134,7 +134,7 @@ form fieldset input {
 }
 
 form input[type="button"], form a {
-	width: 264px;
+	width: 320px;
 	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
 	font-size: 1em;
 }

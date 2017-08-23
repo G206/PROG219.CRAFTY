@@ -108,7 +108,9 @@ function setSettings() {
 	gameVar.maxEnemies = parseInt(document.getElementById('maxEnemies').value);
 	gameVar.maxEnemySpeed = parseInt(document.getElementById('maxEnemySpeed').value);
 	gameVar.initalHP = parseInt(document.getElementById('hitPointPlayer').value);
+	gameVar.VSModeHP = gameVar.initalHP;
 	gameVar.hitPoint = gameVar.initalHP;
+	gameVar.hitPoint2 = gameVar.initalHP;
 	gameVar.hpDisplay.textContent = gameVar.hitPoint;
 	gameVar.hitPointEnemy = parseInt(document.getElementById('hitPointEnemy').value);
 }
