@@ -13,7 +13,7 @@ Crafty.scene('Game', function() {
 
 	if (gameVar.VSMode) {
 		// Player Entity
-		player = Crafty.e(gameVar.shipMF1, 'shipWhite', 'Collision')
+		player = Crafty.e('PlayerShip, ship, Collision')
 			// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
 			.attr({
 				w: gameVar.shipSize * gameVar.canvasScale,
@@ -48,7 +48,7 @@ Crafty.scene('Game', function() {
 		gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
 		gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
 		// Player Two Entity in VS Mode
-		var player2 = Crafty.e(gameVar.shipMF2, 'shipRed', 'Collision')
+		var player2 = Crafty.e('PlayerTwo, shipRed, Collision')
 			// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
 			.attr({
 				w: gameVar.shipSize * gameVar.canvasScale,
@@ -80,7 +80,7 @@ Crafty.scene('Game', function() {
 			});
 	} else {
 		// Player Entity
-		player = Crafty.e(gameVar.shipMF1, 'shipWhite')
+		player = Crafty.e('PlayerShip, ship')
 			// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
 			.attr({
 				w: gameVar.shipSize * gameVar.canvasScale,
@@ -94,8 +94,8 @@ Crafty.scene('Game', function() {
             this.requires('Actor, Rock, Collision');
 			this.collision()
             // Collision with ship damages ship and destroys asteroid
-            .onHit('shipWhite', function(e) {
-				console.log('shipWhite Collision at Asteroid Level');
+            .onHit('ship', function(e) {
+				console.log('Ship Collision at Asteroid Level');
 				// Explosion scene
 				Crafty.e('ExplosionSM').attr({
 					x:this.x-this.w,
@@ -254,8 +254,8 @@ Crafty.scene('Game', function() {
 		})
 		.collision()
 		// Collision with ship Powers Up HP
-		.onHit('shipWhite', function(e) {
-			console.log('shipWhite PU Ship 2');
+		.onHit('ship', function(e) {
+			console.log('Ship PU Ship 2');
 			// if destroyed by ship collision increment the score, decrease HP
 			gameVar.score += 1;
 			gameVar.scoreDisplay.textContent = gameVar.score;
@@ -265,7 +265,7 @@ Crafty.scene('Game', function() {
 
 			this.destroy();
 			player.destroy();
-			player = Crafty.e(gameVar.shipMF1, 'shipWhite')
+			player = Crafty.e('PlayerShip, ship')
 				.attr({
 					w: gameVar.shipSize * gameVar.canvasScale,
 					h: gameVar.shipSize * gameVar.canvasScale
@@ -276,11 +276,11 @@ Crafty.scene('Game', function() {
 			}
 			var secondShip;
 			if (gameVar.ship2_reverse) {
-				secondShip = Crafty.e(gameVar.shipMLRR, 'shipRed');
+				secondShip = Crafty.e('ShipStaticR, shipRed');
 			} else if (gameVar.ship2_independent) {
-				secondShip = Crafty.e(gameVar.shipMLRI, 'shipRed');
+				secondShip = Crafty.e('ShipStaticI, shipRed');
 			} else {
-				secondShip = Crafty.e(gameVar.shipMLR1, 'shipRed');
+				secondShip = Crafty.e('ShipStatic, shipRed');
 			}
 			secondShip.attr({
 				w: gameVar.shipSize * gameVar.canvasScale,
@@ -458,8 +458,8 @@ Crafty.scene('Game', function() {
 				});
 				this.collision()
 				// Collision with ship damages ship and decreases enemy HP. If at 0, destroys itself
-				.onHit('shipWhite', function(e) {
-					console.log('shipWhite Collision with Enemy');
+				.onHit('ship', function(e) {
+					console.log('Ship Collision with Enemy');
 					// if destroyed by ship collision increment the score, decrease HP
 					gameVar.score += 1;
 					gameVar.scoreDisplay.textContent = gameVar.score;
@@ -634,8 +634,8 @@ Crafty.scene('Game', function() {
 				});
 				this.collision()
 				// Collision with ship damages ship and decreases enemy HP. If at 0, destroys itself
-				.onHit('shipWhite', function(e) {
-					console.log('shipWhite Collision with Enemy');
+				.onHit('ship', function(e) {
+					console.log('Ship Collision with Enemy');
 					// if destroyed by ship collision increment the score, decrease HP
 					gameVar.score += 1;
 					gameVar.scoreDisplay.textContent = gameVar.score;
