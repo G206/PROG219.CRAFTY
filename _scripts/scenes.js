@@ -11,38 +11,43 @@ Crafty.scene('Game', function() {
 	gameVar.playerY = Crafty.viewport.height * ((Math.random() * 0.6) + 0.2);
 	var player;
 
+	//Function to register collision HIT events to objects
+	function RegisterPlayerHits(playerName, objectHit, hitPoint, hpDisplay, score, scoreDisplay) {
+		playerName.collision()
+		.onHit(objectHit, function(e) {
+			console.log('Hit from ' + playerName);
+
+			// Play Explosion Audio
+			Crafty.audio.play('explosion');
+			//destroy the missile
+			e[0].obj.destroy();
+			// Explosion Scene
+			Crafty.e('ExplosionBG').attr({
+				x:this.x-this.w,
+				y:this.y-this.h
+			});
+			// Player one looses HP and if at 0, is destroyed
+			hitPoint -= 1;
+			hpDisplay.textContent = hitPoint;
+			score += 1;
+			scoreDisplay.textContent = score;
+			if (hitPoint <= 0) {
+				playerName.destroy();
+				exitCurrentLevel();
+			}
+		});
+	}
+
 	if (gameVar.VSMode) {
 		// Player Entity
-		player = Crafty.e(gameVar.shipMF1, 'shipWhite', 'Collision')
+		player = Crafty.e(gameVar.shipMF1, 'shipWhite')
 			// Origin function changes the center point of move / rotation function. This allows for rotation to happen from the x / y center point of the sprite vs. the upper left point.
 			.attr({
 				w: gameVar.shipSize * gameVar.canvasScale,
 				h: gameVar.shipSize * gameVar.canvasScale
 			})
-			.origin('center')
-			.collision()
-			.onHit('missile2', function(e) {
-				console.log('Hit from Player 2');
-
-				// Play Explosion Audio
-				Crafty.audio.play('explosion');
-				//destroy the missile
-				e[0].obj.destroy();
-	            // Explosion Scene
-	            Crafty.e('ExplosionBG').attr({
-	                x:this.x-this.w,
-	                y:this.y-this.h
-	            });
-				// Player one looses HP and if at 0, is destroyed
-				gameVar.hitPoint -= 1;
-				gameVar.hpDisplay.textContent = gameVar.hitPoint;
-				gameVar.score2 += 1;
-	            gameVar.scoreDisplay2.textContent = gameVar.score2;
-				if (gameVar.hitPoint <= 0) {
-					player.destroy();
-					exitCurrentLevel();
-				}
-			});
+			.origin('center');
+		RegisterPlayerHits(player, 'missile2', gameVar.hitPoint, gameVar.hpDisplay, gameVar.score2, gameVar.scoreDisplay2);
 
 		// Variable to reset X & Y random position
 		gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
@@ -54,30 +59,8 @@ Crafty.scene('Game', function() {
 				w: gameVar.shipSize * gameVar.canvasScale,
 				h: gameVar.shipSize * gameVar.canvasScale
 			})
-			.origin('center')
-			.collision()
-			.onHit('missile', function(e) {
-				console.log('Hit from Player 1');
-
-				// Play Explosion Audio
-				Crafty.audio.play('explosion');
-				//destroy the missile
-				e[0].obj.destroy();
-	            // Explosion Scene
-	            Crafty.e('ExplosionBG').attr({
-	                x:this.x-this.w,
-	                y:this.y-this.h
-	            });
-				// Player one looses HP and if at 0, is destroyed
-				gameVar.hitPoint2 -= 1;
-				gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
-				gameVar.score += 1;
-				gameVar.scoreDisplay.textContent = gameVar.score;
-				if (gameVar.hitPoint2 <= 0) {
-					player2.destroy();
-					exitCurrentLevel();
-				}
-			});
+			.origin('center');
+		RegisterPlayerHits(player2, 'missile', gameVar.hitPoint2, gameVar.hpDisplay2, gameVar.score, gameVar.scoreDisplay);
 	} else {
 		// Player Entity
 		player = Crafty.e(gameVar.shipMF1, 'shipWhite')

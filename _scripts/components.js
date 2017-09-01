@@ -291,7 +291,6 @@ Crafty.c('Rock', {
 	}
 });
 
-
 // Base Enemy Component
 Crafty.c('Enemy', {
 	init: function() {
@@ -689,7 +688,7 @@ Crafty.c('Ship2', {
         this.collision()
         // Collision with Missile destroys asteroid
         .onHit('missile', function(e) {
-			console.log('Missile Hits PowerUp');
+			console.log('Missile Hits Ship2');
             // Explosion Scene
             Crafty.e('ExplosionMD').attr({
                 x:this.x-this.w,
@@ -699,7 +698,7 @@ Crafty.c('Ship2', {
 			Crafty.audio.play('explosion');
 			//destroy the missile
             e[0].obj.destroy();
-			//destroy PowerUp - no benefit
+			//destroy ship2 - no benefit
 			this.destroy();
         });
     }
