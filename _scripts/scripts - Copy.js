@@ -1,3 +1,5 @@
+// Recopied from my Git Repo primary JS file v1.0.0
+
 // Some of the Code and Logic for player controls and movements were from the Crafty JS Asteroid Demo Game
 // "use strict";
 // Global Game Variable Object
@@ -39,8 +41,14 @@ var gameVar = {
 	VSMode: false,
 	VSModeHP: 25,
 	firstTime: true,
-	ship1: 'shipOne',
-	ship2: 'shipTwo',
+	shipFW1: 'shipFW1',
+	shipFW2: 'shipFW2',
+	shipMLR1: 'shipMLR1',
+	shipMLR2: 'shipMLR2',
+	shipMLRR: 'shipMLRR',
+	shipMLRI: 'shipMLRI',
+	shipMF1: 'shipMF1',
+	shipMF2: 'shipMF2',
 	player1: 'playerOne',
 	player2: 'playerTwo'
 };

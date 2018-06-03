@@ -76,6 +76,50 @@ gameVar.canvasW = (Math.max(window.innerWidth || 0) * 0.975);
 gameVar.canvasH =  (Math.max(window.innerHeight || 0) * 0.96);
 
 
+// Function to update HitPoint stats
+function upDateHP(playerNo, amount) {
+	switch (playerNo) {
+		case 1:
+			gameVar.hitPoint = gameVar.hitPoint + amount;
+			gameVar.hpDisplay.textContent = gameVar.hitPoint;
+			break;
+		case 2:
+			gameVar.hitPoint2 = gameVar.hitPoint2 + amount;
+			gameVar.hpDisplay2.textContent = gameVar.hitPoint2;
+			break;
+		default:
+			break;
+	}
+}
+
+// Function to update HitPoint stats
+function upDateScore(playerNo, amount) {
+	switch (playerNo) {
+		case 1:
+			gameVar.score = gameVar.score + amount;
+			gameVar.scoreDisplay.textContent = gameVar.score;
+			break;
+		case 2:
+			gameVar.score2 = gameVar.score2 + amount;
+			gameVar.scoreDisplay2.textContent = gameVar.score2;
+			break;
+		default:
+			break;
+	}
+}
+
+// Function to return current HP
+function returnHP(playerNo) {
+	switch (playerNo) {
+		case 1:
+			return gameVar.hitPoint;
+		case 2:
+			return gameVar.hitPoint2;
+		default:
+			break;
+	}
+}
+
 function setMode() {
 	gameVar.onePlayer = document.getElementById('1P').checked;
 	gameVar.twoPlayer = document.getElementById('2P').checked;

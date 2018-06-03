@@ -134,7 +134,7 @@ form fieldset input {
 }
 
 form input[type="button"], form a {
-	width: 320px;
+	width: 264px;
 	font-family: "Franklin Gothic Heavy", Impact, "Arial Black", sans-serif;
 	font-size: 1em;
 }

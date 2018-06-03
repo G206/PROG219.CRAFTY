@@ -1,3 +1,5 @@
+// Recopied from my Git Repo primary JS file v1.0.0
+
 Crafty.scene('Game', function() {
 	console.log('Level 1 Game Called');
     // Background - Space
