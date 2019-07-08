@@ -193,7 +193,7 @@ Crafty.scene('Game', function() {
 
 	// components in Game used
 
-	Crafty.paths({ audio: '_assets/', background: '_images/', sprites: '_images/', images: '_images/' });
+	Crafty.paths({ audio: 'assets/', background: 'images/', sprites: 'images/', images: 'images/' });
 
 	var assetsObj = {
 	    'audio': {
@@ -815,7 +815,7 @@ Crafty.scene('Game', function() {
 	console.log('Level 1 Game Called');
 
 	var backgroundAsset = Crafty.e('ImageObject, Image')
-		.image("_images/star.png");
+		.image("images/star.png");
 
 	// Variable to store initial player X & Y random position
 	gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);

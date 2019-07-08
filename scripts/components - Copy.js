@@ -2,7 +2,7 @@
 
 // components in Game used
 
-Crafty.paths({ audio: '_assets/', background: '_images/', sprites: '_images/', images: '_images/' });
+Crafty.paths({ audio: 'assets/', background: 'images/', sprites: 'images/', images: 'images/' });
 
 var assetsObj = {
     'audio': {

@@ -77,7 +77,7 @@ div.modalBox {
 	bottom: 0;
 	left: 0;
 	/*background: rgba(0,0,0,0.8);*/
-	background-image: url("../_images/background1.jpg");
+	background-image: url("../images/background1.jpg");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;

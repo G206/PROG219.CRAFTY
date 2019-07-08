@@ -3,10 +3,10 @@
 Crafty.scene('Game', function() {
 	console.log('Level 1 Game Called');
     // Background - Space
-    // Crafty.background("url('_images/space.png')");
+    // Crafty.background("url('images/space.png')");
 
 	var backgroundAsset = Crafty.e('ImageObject, Image')
-		.image("_images/star.png");
+		.image("images/star.png");
 
 	// Variable to store initial player X & Y random position
 	gameVar.playerX = Crafty.viewport.width * ((Math.random() * 0.6) + 0.2);
